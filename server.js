@@ -24,7 +24,6 @@ mongoose.connect(process.env.MONGODB_URI)
     .then(() => console.log('✅ MongoDB Database Connected Successfully!'))
     .catch((err) => console.log('❌ MongoDB Connection Error:', err));
 
-// Mongoose-এর _id কে ফ্রন্টএন্ডের জন্য id তে কনভার্ট করার নিয়ম
 const schemaOptions = {
     timestamps: true,
     toJSON: {
@@ -37,7 +36,6 @@ const schemaOptions = {
     }
 };
 
-// ডেটাবেস টেবিল (Models) তৈরি
 const Reservation = mongoose.model('Reservation', new mongoose.Schema({
     name: String, email: String, phone: String, guests: Number,
     status: { type: String, default: 'pending' },
@@ -56,10 +54,11 @@ const Review = mongoose.model('Review', new mongoose.Schema({
     name: String, comment: String, rating: Number,
     status: { type: String, default: 'pending' }
 }, schemaOptions));
+
 const Order = mongoose.model('Order', new mongoose.Schema({
     orderId: String,
     customerName: String,
-    email: String, // <--- এই নতুন লাইনটি যোগ করুন
+    email: String,
     tableNumber: String,
     items: Array,
     totalAmount: Number,
@@ -126,11 +125,11 @@ async function sendConfirmationEmail(reservation) {
                <p>We look forward to seeing you!</p>`
     });
 }
+
 async function sendBillEmail(order, email) {
     const transporter = getMailTransporter();
     const from = process.env.SMTP_FROM || process.env.SMTP_USER;
     
-    // আইটেমগুলো Group করা
     const itemCounts = {};
     order.items.forEach(item => {
         if(itemCounts[item.name]) {
@@ -172,6 +171,7 @@ async function sendBillEmail(order, email) {
         </div>`
     });
 }
+
 // ==========================================
 // RESERVATION APIs
 // ==========================================
@@ -204,6 +204,7 @@ app.delete('/api/reserve/:id', authenticateAdmin, asyncHandler(async (req, res) 
     await Reservation.findByIdAndDelete(req.params.id);
     res.json({ message: 'Deleted successfully.' });
 }));
+
 app.delete('/api/admin/orders/:id', authenticateAdmin, asyncHandler(async (req, res) => {
     await Order.findByIdAndDelete(req.params.id);
     res.json({ message: 'Order deleted successfully.' });
@@ -215,14 +216,17 @@ app.delete('/api/admin/orders/:id', authenticateAdmin, asyncHandler(async (req, 
 app.get('/api/menu', asyncHandler(async (req, res) => {
     res.json(await Menu.find().sort({ createdAt: -1 }));
 }));
+
 app.post('/api/menu', authenticateAdmin, asyncHandler(async (req, res) => {
     const item = await Menu.create(req.body);
     res.status(201).json({ message: 'Item added.', item });
 }));
+
 app.put('/api/menu/:id', authenticateAdmin, asyncHandler(async (req, res) => {
     const item = await Menu.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json({ message: 'Item updated.', item });
 }));
+
 app.delete('/api/menu/:id', authenticateAdmin, asyncHandler(async (req, res) => {
     await Menu.findByIdAndDelete(req.params.id);
     res.json({ message: 'Item deleted.' });
@@ -234,21 +238,26 @@ app.delete('/api/menu/:id', authenticateAdmin, asyncHandler(async (req, res) => 
 app.get('/api/today-specials', asyncHandler(async (req, res) => {
     res.json(await TodaySpecial.find().sort({ createdAt: -1 }));
 }));
+
 app.post('/api/today-specials', authenticateAdmin, asyncHandler(async (req, res) => {
     const special = await TodaySpecial.create(req.body);
     res.status(201).json({ message: 'Special added.', special });
 }));
+
 app.put('/api/today-specials/:id', authenticateAdmin, asyncHandler(async (req, res) => {
     const special = await TodaySpecial.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json({ message: 'Special updated.', special });
 }));
+
 app.delete('/api/today-specials/:id', authenticateAdmin, asyncHandler(async (req, res) => {
     await TodaySpecial.findByIdAndDelete(req.params.id);
     res.json({ message: 'Special deleted.' });
 }));
+
 app.get('/today-specials.json', (req, res) => {
     res.sendFile(path.join(__dirname, 'today-specials.json'));
 });
+
 // ==========================================
 // REVIEWS APIs
 // ==========================================
@@ -256,20 +265,25 @@ app.post('/api/reviews', asyncHandler(async (req, res) => {
     await Review.create(req.body);
     res.status(201).json({ message: 'Review submitted for approval.' });
 }));
+
 app.get('/api/reviews/approved', asyncHandler(async (req, res) => {
     res.json(await Review.find({ status: 'approved' }).sort({ createdAt: -1 }));
 }));
+
 app.get('/api/admin/reviews', authenticateAdmin, asyncHandler(async (req, res) => {
     res.json(await Review.find().sort({ createdAt: -1 }));
 }));
+
 app.put('/api/admin/reviews/:id/approve', authenticateAdmin, asyncHandler(async (req, res) => {
     await Review.findByIdAndUpdate(req.params.id, { status: 'approved' });
     res.json({ message: 'Review approved.' });
 }));
+
 app.delete('/api/admin/reviews/:id', authenticateAdmin, asyncHandler(async (req, res) => {
     await Review.findByIdAndDelete(req.params.id);
     res.json({ message: 'Review deleted.' });
 }));
+
 // ==========================================
 // LIVE TABLE ORDERS APIs
 // ==========================================
@@ -279,7 +293,6 @@ app.post('/api/orders', asyncHandler(async (req, res) => {
     
     const order = await Order.create({ orderId, customerName, email, tableNumber, items, totalAmount });
     
-    // ইমেইলে বিল পাঠিয়ে দেওয়া (ব্যাকগ্রাউন্ডে)
     if(email) {
         sendBillEmail(order, email).catch(err => console.log("Email sending failed:", err));
     }
@@ -295,10 +308,12 @@ app.put('/api/admin/orders/:id/status', authenticateAdmin, asyncHandler(async (r
     await Order.findByIdAndUpdate(req.params.id, { status: req.body.status });
     res.json({ message: 'Order status updated.' });
 }));
+
 app.delete('/api/admin/orders/:id', authenticateAdmin, asyncHandler(async (req, res) => {
     await Order.findByIdAndDelete(req.params.id);
     res.json({ message: 'Order deleted successfully.' });
 }));
+
 // ==========================================
 // FRONTEND ROUTES & ERROR HANDLER
 // ==========================================

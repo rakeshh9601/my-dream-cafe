@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Dream Cafe | Welcome</title>
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -19,18 +18,18 @@
         :root {
             --gold: #B89768; 
             --dark: #1a1a1a;
-            --light-bg: #EAE0D5; /* একটু গাঢ় কফি শেড (কিছু ডিজাইনের ব্যাকগ্রাউন্ডের জন্য) */
+            --light-bg: #EAE0D5; 
         }
 
         body { 
             font-family: 'Montserrat', sans-serif; 
             color: #333; 
-            background-color: #F6EFE9; /* লাইট ল্যাটে / কফি শেড (পুরো ওয়েবসাইটের জন্য) */
+            background-color: #F6EFE9; 
             overflow-x: hidden; 
         }
 
         /* ========================================= */
-        /* NAVBAR (WHITE RIBBON EFFECT)              */
+        /* NAVBAR                                    */
         /* ========================================= */
         nav {
             display: flex; justify-content: space-between; align-items: center;
@@ -70,9 +69,8 @@
         nav.scrolled .nav-center a { color: var(--dark); font-weight: 700; text-shadow: none; }
         nav.scrolled .nav-center a:hover { color: var(--gold); }
 
-
         /* ========================================= */
-        /* 1. HERO SECTION (FIXED PARALLAX + ANIMATION) */
+        /* 1. HERO SECTION                           */
         /* ========================================= */
         .hero-section {
             height: 100vh;
@@ -84,7 +82,6 @@
 
         .hero-content { max-width: 800px; }
         
-        /* Floating Animation Magic */
         @keyframes floatInUp {
             0% { opacity: 0; transform: translateY(40px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -115,7 +112,6 @@
         }
         .btn-hero-reserve:hover { background-color: transparent; color: var(--gold); }
 
-
         /* ========================================= */
         /* OVERLAPPING LAYOUT WITH PARALLAX PHOTOS   */
         /* ========================================= */
@@ -133,19 +129,17 @@
         .overlap-img {
             width: 60%;
             height: 550px;
-            background-attachment: fixed; /* Chobi ekhane atke thakbe */
+            background-attachment: fixed;
             background-position: center;
             background-size: cover;
             border-radius: 5px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         
-        /* 2. ABOUT US PARALLAX IMAGE */
         .bg-about {
             background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1920&auto=format&fit=crop');
         }
 
-        /* 3. MENU PARALLAX IMAGE */
         .bg-menu {
             background-image: url('https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=1920&auto=format&fit=crop');
         }
@@ -155,7 +149,7 @@
             background-color: #fff;
             padding: 60px 50px;
             box-shadow: 0 15px 50px rgba(0,0,0,0.08);
-            margin-left: -10%; /* Overlap */
+            margin-left: -10%; 
             z-index: 2;
             position: relative;
             text-align: left;
@@ -184,14 +178,13 @@
         .menu-status { color: #777; font-size: 0.9rem; line-height: 1.6; }
 
         /* ========================================= */
-        /* AUTHENTIC CAFE STYLE (Mocha & Cream) */
+        /* AUTHENTIC CAFE STYLE                      */
         /* ========================================= */
         body:not(.dark-mode) {
-            --light-bg: #E3D5C0 !important; /* Creamy Cappuccino */
-            background-color: #DFCEB6 !important; /* Authentic Coffee Milk */
+            --light-bg: #E3D5C0 !important; 
+            background-color: #DFCEB6 !important; 
         }
         
-        /* ওয়েবসাইটের সব বক্স, মেনু, এবং উইন্ডো */
         body:not(.dark-mode) .logo-container,
         body:not(.dark-mode) .overlap-text,
         body:not(.dark-mode) .faq-section,
@@ -201,24 +194,23 @@
         body:not(.dark-mode) #cartModal, 
         body:not(.dark-mode) #paymentModal, 
         body:not(.dark-mode) #receiptModal {
-            background-color: #F4EFE6 !important; /* Warm Milk Froth (আরামদায়ক ক্রিম) */
-            box-shadow: 0 10px 30px rgba(60, 42, 33, 0.12) !important; /* Espresso Shadow (কফি ব্রাউন শ্যাডো) */
+            background-color: #F4EFE6 !important; 
+            box-shadow: 0 10px 30px rgba(60, 42, 33, 0.12) !important; 
             border: 1px solid #CDBA9E !important;
         }
         
-        /* ওপরের ন্যাভবার */
         body:not(.dark-mode) nav.scrolled {
             background-color: rgba(244, 239, 230, 0.95) !important;
         }
         
-        /* ইনপুট বক্সগুলো */
         body:not(.dark-mode) input, 
         body:not(.dark-mode) select, 
         body:not(.dark-mode) textarea {
             background-color: #FFFDF9 !important;
             border-color: #BCA688 !important;
-            color: #3C2A21 !important; /* Dark Coffee Text */
+            color: #3C2A21 !important; 
         }
+
         /* ========================================= */
         /* DARK MODE STYLES                          */
         /* ========================================= */
@@ -238,7 +230,7 @@
         body.dark-mode #reserveModal h2, body.dark-mode #reviewModal h2 { color: #fff !important; }
         body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #333 !important; color: #fff !important; border: 1px solid #444 !important; }
         body.dark-mode button[style*="background:transparent"] { color: #ddd !important; border-color: #555 !important; }
-        /* Dark Mode Logo Adjustments */
+        
         body.dark-mode .logo-container { 
             background-color: #1a1a1a; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.8); 
@@ -251,7 +243,7 @@
             background-color: #121212;
             border-color: #333;
         }
-        /* Theme Toggle Button Style */
+        
         .theme-toggle-btn {
             background: transparent; border: none; color: white; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-left: 15px; display: inline-flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 50%;
         }
@@ -260,12 +252,11 @@
         body.dark-mode nav.scrolled .theme-toggle-btn { color: #fff; }
 
         /* ========================================= */
-        /* 4. REVIEWS SECTION (MOUNTAIN COFFEE BG)   */
+        /* 4. REVIEWS SECTION                        */
         /* ========================================= */
         .reviews-section { 
             padding: 100px 5%; 
             text-align: center; 
-            /* Apnar pochonder Mountain with Coffee background */
             background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), 
                         url('https://images.unsplash.com/photo-1453614512568-c4024d13c247?q=80&w=1920&auto=format&fit=crop') center/cover fixed;
         }
@@ -280,9 +271,8 @@
         .review-text { font-family: 'Playfair Display', serif; font-style: italic; color: #ddd; line-height: 1.8; margin-bottom: 25px; font-size: 1.1rem; }
         .reviewer-name { font-weight: 700; color: #fff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
 
-
         /* ========================================= */
-        /* GALLERY & FAQS (NORMAL BACKGROUNDS)       */
+        /* GALLERY & FAQS                            */
         /* ========================================= */
         .gallery-section { background-color: var(--light-bg); padding: 100px 5%; text-align: center; }
         .section-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--dark); margin-bottom: 10px; }
@@ -318,7 +308,6 @@
         
         .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid #333; color: #777; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
 
-        /* Responsive Fixes */
         @media (max-width: 900px) {
             .nav-center { display: none; }
             .hero-section { justify-content: center; padding-left: 5%; text-align: center; background-attachment: scroll; }
@@ -333,7 +322,6 @@
 </head>
 <body>
 
-    <!-- NAVBAR -->
     <nav>
         <div class="logo-container">
             <div class="logo-main">My Dream</div>
@@ -348,7 +336,6 @@
             <li><a href="#reviews">REVIEWS</a></li>
             <li><a href="#gallery">GALLERY</a></li>
             <li><a href="#contact">CONTACT US</a></li>
-            <!-- Dark Mode Toggle Button -->
             <li>
                 <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
                     <i class="fa-solid fa-moon"></i>
@@ -357,7 +344,6 @@
         </ul>
     </nav>
 
-    <!-- 1. HERO SECTION (WITH FLOATING TEXT ANIMATION) -->
     <header class="hero-section" id="home">
         <div class="hero-content">
             <h2 class="welcome-text">Welcome to</h2>
@@ -368,7 +354,6 @@
         </div>
     </header>
 
-    <!-- 2. ABOUT SECTION (Fixed Parallax + Overlap) -->
     <section class="section-padding" id="about">
         <div class="overlap-container">
             <div class="overlap-img bg-about"></div> 
@@ -382,7 +367,6 @@
         </div>
     </section>
 
-    <!-- 3. TODAY'S SPECIAL SECTION -->
     <section class="section-padding" id="menu" style="background-color: #fff;">
         <div class="overlap-container overlap-reverse">
             <div class="overlap-img bg-menu"></div> 
@@ -395,7 +379,6 @@
                     <p class="menu-status">Loading today’s specials...</p>
                 </div>
 
-                <!-- VIEW FULL MENU BUTTON -->
                 <div style="margin-top: 40px; text-align: center;">
                     <button class="btn-dark" id="viewMenuBtn" onclick="toggleFullMenu()" style="width: 100%;">VIEW FULL MENU</button>
                 </div>
@@ -403,7 +386,6 @@
         </div>
     </section>
 
-    <!-- 4. FULL MENU SECTION (Hidden by default) -->
     <section class="section-padding" id="full-menu" style="background-color: var(--light-bg); padding-top: 80px; display: none;">
         <div style="text-align: center; margin-bottom: 50px;">
             <h2 class="section-title">Explore Our Menu</h2>
@@ -415,10 +397,8 @@
         </div>
     </section>
 
-    <!-- 4. REVIEWS SECTION (Mountain with Coffee Parallax Background) -->
     <section class="reviews-section" id="reviews">
         
-        <!-- হেডিং এবং বাটন পাশাপাশি রাখার জন্য Flexbox -->
         <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 50px auto; flex-wrap: wrap; gap: 20px; padding: 0 20px;">
             <div style="text-align: left;">
                 <h2 class="section-title" style="color: #fff; margin-bottom: 5px;">What Our Guests Say</h2>
@@ -427,11 +407,9 @@
             <button class="btn-hero-reserve" onclick="openReviewModal()" style="animation: none; opacity: 1;">LEAVE YOUR FEEDBACK</button>
         </div>
         
-        <!-- ডাইনামিক রিভিউগুলো এই বক্সের ভেতরে আসবে -->
         <div class="review-grid"></div>
 
     </section>
-    <!-- GALLERY SECTION -->
     <section class="gallery-section" id="gallery">
         <h2 class="section-title">Our Gallery</h2>
         <p class="section-subtitle">MOMENTS CAPTURED AT MY DREAM CAFE</p>
@@ -443,7 +421,6 @@
         </div>
     </section>
 
-    <!-- FAQ SECTION -->
     <section class="faq-section" id="faq">
         <h2 class="section-title">Common Questions</h2>
         <p class="section-subtitle">FREQUENTLY ASKED QUESTIONS (FAQS)</p>
@@ -473,7 +450,6 @@
         </div>
     </section>
 
-    <!-- PREMIUM FOOTER -->
     <footer id="contact">
         <div class="footer-grid">
             <div class="footer-col">
@@ -506,9 +482,6 @@
         </div>
     </footer>
 
-    <!-- ========================================== -->
-    <!-- RESERVATION MODAL & TOAST NOTIFICATION     -->
-    <!-- ========================================== -->
     <div id="modalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999; backdrop-filter: blur(5px);"></div>
 
     <div id="reserveModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:50px 40px; border-radius:3px; z-index:1000; width:90%; max-width:400px; text-align:center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
@@ -525,7 +498,7 @@
             <button onclick="closeModal()" style="background:transparent; border: 1px solid #ddd; color:#555; padding:15px 25px; cursor:pointer; font-weight:600; letter-spacing: 1px; font-family:'Montserrat', sans-serif; transition: 0.3s; width: 100%;">CANCEL</button>
         </div>
     </div>
-    <!-- REVIEW MODAL (Hidden by default) -->
+    
     <div id="reviewModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:40px; border-radius:3px; z-index:1000; width:90%; max-width:500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
         <div style="text-align: center;">
             <h2 style="font-family:'Playfair Display', serif; color:var(--dark); margin-bottom:10px; font-size: 2rem;">Leave Feedback</h2>
@@ -552,13 +525,11 @@
             </div>
         </form>
     </div>
-    <!-- Floating Cart Button -->
+    
     <button id="floatingCartBtn" onclick="openCartModal()" style="display:none; position:fixed; bottom:30px; right:30px; background:var(--gold); color:#fff; border:none; padding:15px 20px; border-radius:50px; font-size:1.2rem; cursor:pointer; box-shadow:0 10px 30px rgba(0,0,0,0.3); z-index:998; transition:0.3s;">
         <i class="fa-solid fa-cart-shopping"></i> <span id="cartCount" style="font-weight:bold; margin-left:8px;">0</span>
     </button>
 
-    <!-- Cart Modal -->
-    <!-- Cart Modal -->
     <div id="cartModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:30px; border-radius:5px; z-index:1000; width:90%; max-width:450px; box-shadow:0 20px 50px rgba(0,0,0,0.5);">
         <h2 style="font-family:'Playfair Display', serif; margin-bottom:20px; text-align:center;">Your Order</h2>
         <div id="cartItemsList" style="max-height:200px; overflow-y:auto; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;"></div>
@@ -574,7 +545,6 @@
         </div>
     </div>
 
-    <!-- Demo Payment Gateway Modal -->
     <div id="paymentModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:30px; border-radius:8px; z-index:1005; width:90%; max-width:400px; box-shadow:0 20px 50px rgba(0,0,0,0.6); text-align:center;">
         <h3 style="margin-bottom:5px; color:#555;">Total Payable Amount</h3>
         <h1 style="color:var(--dark); margin-bottom:25px; font-size:2.5rem;">₹<span id="payAmount">0</span></h1>
@@ -592,7 +562,6 @@
         <button onclick="closePaymentModal()" style="background:none; color:#dc3545; padding:10px; border:none; width:100%; cursor:pointer; margin-top:10px; text-decoration:underline;">Cancel Payment</button>
     </div>
 
-   <!-- Digital Receipt Modal -->
     <div id="receiptModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:30px; border-radius:5px; z-index:1000; width:90%; max-width:400px; box-shadow:0 20px 50px rgba(0,0,0,0.5);">
         
         <div style="text-align:center; border-bottom:1px dashed #ccc; padding-bottom:15px; margin-bottom:15px;">
@@ -625,7 +594,6 @@
     </div>
 
     <script>
-        // Navbar Scroll Magic
         window.addEventListener('scroll', function() {
             const navbar = document.querySelector('nav');
             if (window.scrollY > 50) {
@@ -635,13 +603,11 @@
             }
         });
 
-        // FAQ Toggle Logic
         function toggleFaq(element) {
             const parent = element.parentElement;
             parent.classList.toggle('active');
         }
 
-        // Open Modal
         document.querySelector('.btn-hero-reserve').addEventListener('click', function(e) {
             e.preventDefault();
             document.getElementById('reserveModal').style.display = 'block';
@@ -721,13 +687,9 @@
             container.replaceChildren(status);
         }
 
-        // ==========================================
-        // TODAY'S SPECIAL MENU LOAD (FETCH FROM DB)
-        // ==========================================
         async function loadTodaySpecials() {
             const container = document.getElementById('todaySpecials'); 
             try {
-                // আপনার আসল ডেটাবেসের API থেকে Tea, Coffee আনবে
                 const response = await fetch('/api/today-specials');
                 const specials = await response.json();
                 
@@ -763,8 +725,7 @@
 
         loadTodaySpecials();
         setInterval(loadTodaySpecials, 30000);
-        // Load Full Menu by Categories
-        // Load Full Menu by Categories (With Add to Cart)
+
         async function loadFullMenu() {
             const container = document.getElementById('fullMenuContainer');
             try {
@@ -803,7 +764,6 @@
                     `;
 
                     items.forEach(item => {
-                        // খাবারের নামে সিঙ্গেল কোটেশন (') থাকলে যাতে এরর না আসে তার ব্যবস্থা
                         const safeName = item.name.replace(/'/g, "\\'"); 
                         
                         categoryHTML += `
@@ -826,30 +786,26 @@
             }
         }
 
-        // ফাংশনটি কল করা
         loadFullMenu();
-        // Toggle Full Menu Function
+
         function toggleFullMenu() {
             const fullMenu = document.getElementById('full-menu');
             const btn = document.getElementById('viewMenuBtn');
             
             if (fullMenu.style.display === 'none') {
-                // মেনু ওপেন হবে
                 fullMenu.style.display = 'block';
-                btn.textContent = 'HIDE FULL MENU'; // বাটনের লেখা চেঞ্জ হবে
+                btn.textContent = 'HIDE FULL MENU'; 
                 
-                // স্মুথভাবে নিচে স্ক্রল করবে
                 setTimeout(() => {
                     fullMenu.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
             } else {
-                // মেনু আবার হাইড হবে
                 fullMenu.style.display = 'none';
                 btn.textContent = 'VIEW FULL MENU';
                 document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
             }
         }
-        // ডাইনামিক রিভিউ লোড করা
+
         async function loadDynamicReviews() {
             const grid = document.querySelector('.review-grid');
             if(!grid) return;
@@ -859,7 +815,7 @@
                 const reviews = await res.json();
 
                 if(reviews.length > 0) {
-                    grid.innerHTML = ''; // হার্ডকোডেড রিভিউ রিমুভ করবে
+                    grid.innerHTML = ''; 
                     reviews.forEach(r => {
                         let starsHTML = '<i class="fa-solid fa-star"></i>'.repeat(r.rating);
                         const card = document.createElement('div');
@@ -877,8 +833,6 @@
             }
         }
         
-        // রিভিউ সাবমিট করা
-        // Review Modal Open / Close Logic
         function openReviewModal() {
             document.getElementById('reviewModal').style.display = 'block';
             document.getElementById('modalOverlay').style.display = 'block';
@@ -890,7 +844,6 @@
             document.getElementById('reviewForm').reset();
         }
 
-        // রিভিউ সাবমিট করা
         async function submitReview(event) {
             event.preventDefault();
             const data = {
@@ -907,21 +860,18 @@
                 });
                 const result = await res.json();
                 
-                showToast(result.message); // নোটিফিকেশন দেখাবে
+                showToast(result.message); 
                 
                 if(res.ok) {
-                    closeReviewModal(); // সাবমিট হলে পপ-আপ অটো বন্ধ হয়ে যাবে
+                    closeReviewModal(); 
                 }
             } catch (err) {
                 showToast('Failed to submit review.');
             }
         }
 
-        // পেজ লোড হওয়ার সাথে সাথে রিভিউ কল করা
         loadDynamicReviews();
-        // ==========================================
-        // DARK & LIGHT MODE LOGIC
-        // ==========================================
+
         function toggleTheme() {
             const body = document.body;
             const themeBtn = document.getElementById('themeToggle');
@@ -929,7 +879,6 @@
             
             body.classList.toggle('dark-mode');
             
-            // আইকন চেঞ্জ করা এবং লোকাল স্টোরেজে সেভ করা
             if(body.classList.contains('dark-mode')) {
                 icon.classList.remove('fa-moon');
                 icon.classList.add('fa-sun');
@@ -941,7 +890,6 @@
             }
         }
 
-        // পেজ লোড হওয়ার সময় আগের সেভ করা থিম চেক করা
         window.addEventListener('DOMContentLoaded', () => {
             const savedTheme = localStorage.getItem('cafeTheme');
             if(savedTheme === 'dark') {
@@ -953,9 +901,7 @@
                 }
             }
         });
-        // ==========================================
-        // CART & ORDERING SYSTEM
-        // ==========================================
+
         let cart = [];
 
         function addToCart(name, price) {
@@ -969,13 +915,11 @@
             const list = document.getElementById('cartItemsList');
             const cartTotal = document.getElementById('cartTotal');
 
-            // যদি কার্ট খালি থাকে, তাহলে কার্ট বন্ধ করে দেবে
             if (cart.length === 0) {
                 closeCartModal();
                 return;
             }
 
-            // আইটেমগুলো Group করা এবং unitPrice সেভ রাখা
             const itemCounts = {};
             cart.forEach((item) => {
                 if (itemCounts[item.name]) {
@@ -989,7 +933,6 @@
             list.innerHTML = '';
             let total = 0;
 
-            // Group করা আইটেমগুলো Cart-এ দেখানো (সাথে + , - এবং Delete বাটন)
             for (const [name, data] of Object.entries(itemCounts)) {
                 total += data.price;
                 const safeName = name.replace(/'/g, "\\'"); 
@@ -999,17 +942,14 @@
                         <span style="font-weight:600; color:#333; flex:1;">${name}</span>
                         
                         <div style="display:flex; align-items:center; gap:12px;">
-                            <!-- Plus / Minus Quantity Controls -->
                             <div style="display:flex; align-items:center; border:1px solid #ddd; border-radius:3px; overflow:hidden;">
                                 <button onclick="removeOneFromCart('${safeName}')" style="background:#f1f1f1; border:none; padding:4px 10px; cursor:pointer; font-weight:bold; color:#333; font-size:1.1rem; transition:0.3s;">-</button>
                                 <span style="padding:0 10px; font-weight:bold; font-size:0.95rem; min-width:30px; text-align:center;">${data.qty}</span>
                                 <button onclick="addOneToCart('${safeName}', ${data.unitPrice})" style="background:#f1f1f1; border:none; padding:4px 10px; cursor:pointer; font-weight:bold; color:#333; font-size:1.1rem; transition:0.3s;">+</button>
                             </div>
                             
-                            <!-- Item Total Price -->
                             <span style="font-weight:bold; color:var(--dark); width:55px; text-align:right;">₹${data.price}</span>
                             
-                            <!-- Full Delete Button -->
                             <button onclick="removeAllFromCart('${safeName}')" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:1.1rem; margin-left:5px;" title="Delete All">
                                 <i class="fa-solid fa-trash"></i>
                             </button>
@@ -1023,14 +963,12 @@
             document.getElementById('modalOverlay').style.display = 'block';
         }
 
-        // Cart-এর ভেতরে '+' বাটনে ক্লিক করলে ১টি আইটেম বাড়বে
         function addOneToCart(name, price) {
             cart.push({ name, price });
             document.getElementById('cartCount').innerText = cart.length;
-            openCartModal(); // কার্ট রিফ্রেশ করবে
+            openCartModal(); 
         }
 
-        // Cart-এর ভেতরে '-' বাটনে ক্লিক করলে ১টি আইটেম কমবে
         function removeOneFromCart(name) {
             const index = cart.findIndex(item => item.name === name);
             if (index > -1) {
@@ -1046,7 +984,6 @@
             }
         }
 
-        // Cart-এর ভেতরে 'Trash' আইকনে ক্লিক করলে ওই আইটেমটি পুরোপুরি ডিলিট হয়ে যাবে
         function removeAllFromCart(name) {
             cart = cart.filter(item => item.name !== name);
             document.getElementById('cartCount').innerText = cart.length;
@@ -1059,20 +996,6 @@
             }
         }
 
-        // Cart থেকে একটি একটি করে আইটেম কমানোর ফাংশন
-        function removeOneFromCart(name) {
-            const index = cart.findIndex(item => item.name === name);
-            if (index > -1) {
-                cart.splice(index, 1); // শুধু একটা আইটেম ডিলিট করবে
-                document.getElementById('cartCount').innerText = cart.length; // কার্টের নাম্বার আপডেট করবে
-                
-                if (cart.length === 0) {
-                    closeCartModal();
-                } else {
-                    openCartModal(); // কার্ট রিলোড করবে
-                }
-            }
-        }
         function closeCartModal() {
             document.getElementById('cartModal').style.display = 'none';
             document.getElementById('modalOverlay').style.display = 'none';
@@ -1096,13 +1019,14 @@
                 if(res.ok) {
                     closeCartModal();
                     showReceipt(data.order);
-                    cart = []; // Empty cart
+                    cart = []; 
                     document.getElementById('floatingCartBtn').style.display = 'none';
                 }
             } catch(e) {
                 showToast("Failed to place order.");
             }
         }
+
         function proceedToPayment() {
             const name = document.getElementById('orderName').value;
             const email = document.getElementById('orderEmail').value;
@@ -1146,7 +1070,7 @@
                     if(res.ok) {
                         setTimeout(() => {
                             document.getElementById('paymentModal').style.display = 'none';
-                            data.order.email = email; // ইমেইল দেখানোর জন্য
+                            data.order.email = email; 
                             showReceipt(data.order);
                             cart = []; 
                             document.getElementById('floatingCartBtn').style.display = 'none';
@@ -1172,7 +1096,6 @@
             document.getElementById('receiptDate').innerText = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
             document.getElementById('receiptEmailDisplay').innerText = order.email;
             
-            // আইটেমগুলো Group করা (যেমন: Water x 2)
             const itemCounts = {};
             order.items.forEach(item => {
                 if(itemCounts[item.name]) {
