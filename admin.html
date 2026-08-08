@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | My Dream Cafe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f4f7f6; color: #333; }
+        .admin-nav { background-color: #1a1a1a; color: #B89768; padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .admin-nav h2 { font-size: 1.5rem; letter-spacing: 1px; color: #fff; }
+        .admin-nav h2 span { color: #B89768; }
+        .refresh-btn { background-color: #B89768; color: #fff; border: none; padding: 10px 20px; font-weight: 600; border-radius: 4px; cursor: pointer; transition: 0.3s; }
+        .refresh-btn:hover { background-color: #a08155; }
+        .container { padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 16px; }
+        .dashboard-header h3 { font-size: 1.4rem; color: #222; }
+        .table-container { background: #fff; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); overflow-x: auto; }
+        table { width: 100%; min-width: 980px; border-collapse: collapse; text-align: left; }
+        thead { background-color: #1a1a1a; color: #B89768; }
+        th { padding: 18px 20px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem; }
+        td { padding: 15px 20px; border-bottom: 1px solid #eee; font-size: 0.95rem; color: #555; vertical-align: middle; }
+        tbody tr:hover { background-color: #fbfaf8; }
+        .customer-name { font-weight: 600; color: #1a1a1a; }
+        .btn-confirm, .btn-delete { color: white; border: none; padding: 7px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 600; }
+        .btn-confirm { background-color: #28a745; margin-right: 5px; }
+        .btn-delete { background-color: #dc3545; }
+        .btn-confirm:hover:not(:disabled) { background-color: #218838; }
+        .btn-delete:hover { background-color: #c82333; }
+        .btn-confirm:disabled { background-color: #93b99d; cursor: not-allowed; }
+        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; }
+        .status-pending { color: #8a5b00; background: #fff3cd; }
+        .status-confirmed { color: #146c43; background: #d1e7dd; }
+        .empty-message { text-align: center; padding: 40px; color: #888; font-style: italic; }
+        .admin-section { margin-top: 52px; }
+        .menu-management-grid { display: grid; grid-template-columns: minmax(260px, 360px) minmax(0, 1fr); gap: 24px; align-items: start; }
+        .menu-form-card { background: #fff; border-radius: 8px; padding: 28px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .menu-form-card h4 { color: #1a1a1a; margin-bottom: 22px; font-size: 1.05rem; }
+        .menu-form-card label { display: block; margin: 16px 0 7px; color: #444; font-weight: 600; font-size: 0.85rem; }
+        .menu-form-card input { width: 100%; border: 1px solid #dcdcdc; border-radius: 4px; padding: 12px; font: inherit; color: #222; }
+        .menu-form-card input:focus { outline: 2px solid rgba(184,151,104,0.35); border-color: #B89768; }
+        .price-field { display: flex; align-items: center; border: 1px solid #dcdcdc; border-radius: 4px; overflow: hidden; }
+        .price-field span { padding: 12px 0 12px 12px; color: #B89768; font-weight: 700; }
+        .menu-form-card .price-field input { border: none; border-radius: 0; padding-left: 8px; }
+        .form-actions { display: flex; gap: 10px; margin-top: 24px; }
+        .btn-primary, .btn-secondary, .btn-edit { border: none; padding: 10px 14px; border-radius: 4px; cursor: pointer; font-size: 0.82rem; font-weight: 700; }
+        .btn-primary { background: #1a1a1a; color: #fff; }
+        .btn-primary:hover { background: #333; }
+        .btn-secondary { background: #ececec; color: #444; }
+        .btn-edit { background: #B89768; color: #fff; margin-right: 5px; }
+        .btn-edit:hover { background: #a08155; }
+        .menu-feedback { min-height: 20px; margin-top: 14px; color: #146c43; font-size: 0.82rem; line-height: 1.4; }
+        .menu-feedback.error { color: #dc3545; }
+        .menu-table { min-width: 540px; }
+        @media (max-width: 800px) { .menu-management-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .admin-nav, .dashboard-header { align-items: flex-start; flex-direction: column; } .container { padding: 28px 16px; } }
+        /* Tab Navigation Styles */
+        .tabs-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #888;
+            cursor: pointer;
+            transition: 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px; /* Border overlap */
+            font-family: inherit;
+        }
+        .tab-btn i {
+            margin-right: 8px;
+        }
+        .tab-btn:hover {
+            color: #1a1a1a;
+        }
+        .tab-btn.active {
+            color: #B89768;
+            border-bottom-color: #B89768;
+        }
+
+        /* Tab Content Styles */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* আগের .admin-section এর margin-top সরিয়ে দিন কারণ এখন Tab দিয়ে কন্ট্রোল হবে */
+        .admin-section { margin-top: 0; }
+        /* ========================================= */
+        /* FIX: TABLE & ACTION BUTTONS LAYOUT        */
+        /* ========================================= */
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            /* টেবিলের ডেটা প্রয়োজন অনুযায়ী ভেঙে নিচে নামবে, টেবিল বড় হবে না */
+        }
+
+        th, td {
+            padding: 15px 20px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        /* শুধু হেডিং এবং শেষের অ্যাকশন কলামটি যেন ভেঙে না যায় */
+        th, td:last-child {
+            white-space: nowrap;
+        }
+
+        /* অ্যাকশন (ACTION) বাটনগুলোকে পাশাপাশি রাখা */
+        td button {
+            display: inline-block !important;
+            margin-right: 10px !important;
+            margin-bottom: 0 !important;
+            padding: 8px 16px !important;
+            border-radius: 4px !important;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            white-space: nowrap; /* বাটনগুলো যেন না ভাঙে */
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Login Screen -->
+    <div id="loginScreen" style="display: flex; height: 100vh; align-items: center; justify-content: center; background: #f4f7f6; position: fixed; width: 100%; top: 0; left: 0; z-index: 2000;">
+        <div style="background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center;">
+            <h2 style="margin-bottom: 25px; color: #1a1a1a;">Admin Login</h2>
+            <input type="text" id="adminUser" placeholder="Username" style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #dcdcdc; border-radius: 4px; outline: none;">
+            <input type="password" id="adminPass" placeholder="Password" style="width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #dcdcdc; border-radius: 4px; outline: none;">
+            <button onclick="loginAdmin()" style="background: #B89768; color: #fff; border: none; padding: 12px; width: 100%; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.3s;">LOGIN</button>
+            <p id="loginError" style="color: #dc3545; margin-top: 15px; font-size: 0.85rem;"></p>
+        </div>
+    </div>
+    <div class="admin-nav">
+    <h2>My Dream <span>Admin</span></h2>
+    <div>
+        <button class="refresh-btn" type="button" onclick="refreshDashboard()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+        <!-- Logout Button -->
+        <button class="refresh-btn" type="button" onclick="logoutAdmin()" style="background: #dc3545; margin-left: 10px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </div>
+</div>
+
+    <main class="container">
+    <!-- Tab Buttons (৩টি বাটন এক লাইনে থাকবে) -->
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab(event, 'reservationsTab')">
+            <i class="fa-solid fa-bell-concierge"></i> Reservations
+        </button>
+        <button class="tab-btn" onclick="switchTab(event, 'specialsTab')">
+            <i class="fa-solid fa-utensils"></i> Today's Specials
+        </button>
+        <button class="tab-btn" onclick="switchTab(event, 'fullMenuTab')">
+            <i class="fa-solid fa-list-ul"></i> Full Menu
+        </button>
+        <button class="tab-btn" onclick="switchTab(event, 'reviewsTab')">
+            <i class="fa-solid fa-star"></i> Reviews
+        </button>
+        <button class="tab-btn" onclick="switchTab(event, 'ordersTab')">
+            <i class="fa-solid fa-receipt"></i> Live Orders
+        </button>
+    </div>
+
+    <!-- Tab 1: Reservations -->
+    <div id="reservationsTab" class="tab-content active">
+        <div class="dashboard-header">
+            <h3>Recent Table Reservations</h3>
+            <span id="totalCount" style="background: #1a1a1a; color: #B89768; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">Total: 0</span>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date &amp; Time</th>
+                        <th>Customer Name</th>
+                        <th>Email</th>
+                        <th>Phone No.</th>
+                        <th>Guests</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="reservationTable">
+                    <tr><td colspan="7" class="empty-message">Loading reservations...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tab 2: Today's Special -->
+    <div id="specialsTab" class="tab-content">
+        <section class="admin-section" aria-labelledby="todaySpecialsHeading">
+            <div class="dashboard-header">
+                <h3 id="todaySpecialsHeading">Manage Specials</h3>
+                <span id="specialCount" style="background: #1a1a1a; color: #B89768; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">Total: 0</span>
+            </div>
+
+            <div class="menu-management-grid">
+                <form class="menu-form-card" id="specialForm">
+                    <h4 id="specialFormTitle">Add Today's Special</h4>
+
+                    <label for="specialName">Item name</label>
+                    <input id="specialName" type="text" maxlength="100" placeholder="e.g. Chicken Sandwich" required>
+
+                    <label for="specialPrice">Price</label>
+                    <div class="price-field">
+                        <span>₹</span>
+                        <input id="specialPrice" type="number" min="0.01" max="100000" step="0.01" placeholder="e.g. 250" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn-primary" id="specialSubmit" type="submit">Add Special</button>
+                        <button class="btn-secondary" id="cancelSpecialEdit" type="button" hidden>Cancel</button>
+                    </div>
+                    <p class="menu-feedback" id="specialFormMessage" role="status"></p>
+                </form>
+
+                <div class="table-container">
+                    <table class="menu-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="specialTable">
+                            <tr><td colspan="3" class="empty-message">Loading today's specials...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tab 3: Full Menu -->
+    <div id="fullMenuTab" class="tab-content">
+        <section class="admin-section" aria-labelledby="fullMenuHeading">
+            <div class="dashboard-header">
+                <h3 id="fullMenuHeading">Manage Full Menu</h3>
+                <span id="menuCount" style="background: #1a1a1a; color: #B89768; padding: 5px 15px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">Total: 0</span>
+            </div>
+
+            <div class="menu-management-grid">
+                <form class="menu-form-card" id="fullMenuForm">
+                    <h4 id="fullMenuFormTitle">Add Menu Item</h4>
+
+                    <label for="menuName">Item name</label>
+                    <input id="menuName" type="text" maxlength="100" placeholder="e.g. Cappuccino" required>
+
+                    <label for="menuCategory">Category</label>
+                    <select id="menuCategory" required style="width: 100%; border: 1px solid #dcdcdc; border-radius: 4px; padding: 12px; font: inherit; color: #222; margin-bottom: 16px; outline: none; background: #fff;">
+                        <option value="" disabled selected>Select a category...</option>
+                        <option value="Hot Beverages">Hot Beverages</option>
+                        <option value="Cold Drinks">Cold Drinks</option>
+                        <option value="Snacks">Snacks</option>
+                        <option value="Desserts">Desserts</option>
+                    </select>
+
+                    <label for="menuPrice">Price</label>
+                    <div class="price-field">
+                        <span>₹</span>
+                        <input id="menuPrice" type="number" min="0.01" max="100000" step="0.01" placeholder="e.g. 150" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn-primary" id="menuSubmit" type="submit">Add Item</button>
+                        <button class="btn-secondary" id="cancelMenuEdit" type="button" hidden>Cancel</button>
+                    </div>
+                    <p class="menu-feedback" id="fullMenuFormMessage" role="status"></p>
+                </form>
+
+                <div class="table-container">
+                    <table class="menu-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fullMenuTable">
+                            <tr><td colspan="4" class="empty-message">Loading menu...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<!-- Tab 4: Reviews Management -->
+    <div id="reviewsTab" class="tab-content">
+        <div class="dashboard-header">
+            <h3>Customer Reviews</h3>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="adminReviewsTable">
+                    <tr><td colspan="5" class="empty-message">Loading reviews...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<!-- Tab 5: Live Orders -->
+    <div id="ordersTab" class="tab-content">
+        <div class="dashboard-header">
+            <h3>Live Table Orders</h3>
+        </div>
+        <!-- Live Orders Filter Bar (Modern & Clean) -->
+        <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid #eaeaea; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+            <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <span style="font-size: 0.9rem; font-weight: 700; color: #333;"><i class="fa-solid fa-filter" style="color: var(--gold); margin-right: 5px;"></i> Date Filter:</span>
+                <select id="orderDateFilter" onchange="filterLiveOrders()" style="padding: 8px 14px; border-radius: 5px; border: 1px solid #ddd; outline: none; font-size: 0.9rem; background: #fafafa; cursor: pointer; font-weight: 500;">
+                    <option value="all">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="yesterday">Yesterday</option>
+                    <option value="custom">Specific Date</option>
+                </select>
+                <input type="date" id="orderCustomDate" onchange="filterLiveOrders()" style="padding: 7px 12px; border-radius: 5px; border: 1px solid #ddd; outline: none; font-size: 0.9rem; background: #fafafa; display: none;">
+            </div>
+
+            <div>
+                <input type="text" id="orderSearchInput" placeholder="🔍 Search by Order ID, Name..." onkeyup="filterLiveOrders()" style="padding: 8px 16px; border-radius: 5px; border: 1px solid #ddd; outline: none; font-size: 0.9rem; width: 280px; background: #fafafa;">
+            </div>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>DATE & TIME</th>
+                        <th>ORDER ID</th>
+                        <th>CUSTOMER NAME</th>
+                        <th>TABLE</th>
+                        <th>STATUS</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody id="adminOrdersTable">
+                    <tr><td colspan="6" class="empty-message">Loading orders...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Admin Digital Bill / Receipt Modal -->
+    <div id="adminBillModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:30px; border-radius:5px; z-index:1000; width:90%; max-width:400px; box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+        
+        <!-- Header (Cafe Name & Address) -->
+        <div style="text-align:center; border-bottom:1px dashed #ccc; padding-bottom:15px; margin-bottom:15px;">
+            <h2 style="font-family:'Playfair Display', serif; margin:0; color:var(--dark); font-size: 2rem;">My Dream Cafe</h2>
+            <p style="margin:5px 0 0; font-size:0.9rem; color:#555;">123 Mountain View Road, Darjeeling<br>Ph: +91 914433374</p>
+        </div>
+        
+        <!-- Order Metadata -->
+        <div style="margin-bottom:15px; font-size:0.9rem; color:#333;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <span><strong>Order ID:</strong> <span id="billOrderId"></span></span>
+                <span><strong>Table No:</strong> <span id="billTableNo"></span></span>
+            </div>
+            <div style="margin-bottom:5px;"><strong>Customer:</strong> <span id="billCustomerName" style="color:var(--gold); font-weight:bold;"></span></div>
+            <div style="margin-bottom:5px;"><strong>Email:</strong> <span id="billCustomerEmail"></span></div>
+            <div style="margin-bottom:5px;"><strong>Date & Time:</strong> <span id="billDateTime"></span></div>
+        </div>
+        
+        <!-- Separate Items Details -->
+        <div id="billItemsList" style="margin-bottom:15px; border-top:1px dashed #ccc; border-bottom:1px dashed #ccc; padding:15px 0; font-size:0.95rem; color:#444;">
+            <!-- Items dynamically loaded here -->
+        </div>
+        
+        <!-- Total Amount -->
+        <div style="text-align:right; margin-bottom:20px;">
+            <h3 style="margin:0; color:var(--dark);">Total Amount: ₹<span id="billTotalAmount"></span></h3>
+        </div>
+        
+        <!-- Close Button -->
+        <button onclick="closeAdminBillModal()" style="background:var(--gold); color:#fff; padding:12px; border:none; width:100%; cursor:pointer; font-weight:bold; border-radius:3px; letter-spacing:1px;">CLOSE RECEIPT</button>
+    </div>
+    
+    <!-- Modal Overlay Background -->
+    <div id="adminModalOverlay" onclick="closeAdminBillModal()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:999;"></div>
+    <script>
+        // Login Logic & API Fetch Wrapper
+        async function loginAdmin() {
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: user, password: pass })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    localStorage.setItem('adminToken', data.token); // Save token
+                    document.getElementById('loginScreen').style.display = 'none'; // Hide login
+                    refreshDashboard(); // Load data
+                } else {
+                    document.getElementById('loginError').textContent = data.message;
+                }
+            } catch (err) {
+                document.getElementById('loginError').textContent = "Server error!";
+            }
+        }
+        // লগ আউট ফাংশন
+        function logoutAdmin() {
+            localStorage.removeItem('adminToken');
+            window.location.reload(); 
+        }
+
+        // কাস্টম ফেচ ফাংশন (লগ আউটের নিচে থাকবে)
+        // কাস্টম ফেচ ফাংশন
+        async function apiFetch(url, options = {}) {
+            const token = localStorage.getItem('adminToken');
+            const headers = options.headers || {};
+            
+            if (token) headers['Authorization'] = `Bearer ${token}`; 
+            
+            const response = await fetch(url, { ...options, headers });
+            
+            if (response.status === 401 || response.status === 403) {
+                localStorage.removeItem('adminToken'); 
+                document.getElementById('loginScreen').style.display = 'flex';
+                throw new Error('Session expired. Please login again.');
+            }
+            return response;
+        }
+        const tableBody = document.getElementById('reservationTable');
+        const totalCount = document.getElementById('totalCount');
+        const specialTableBody = document.getElementById('specialTable');
+        const specialCount = document.getElementById('specialCount');
+        const specialForm = document.getElementById('specialForm');
+        const specialFormTitle = document.getElementById('specialFormTitle');
+        const specialNameInput = document.getElementById('specialName');
+        const specialPriceInput = document.getElementById('specialPrice');
+        const specialSubmitButton = document.getElementById('specialSubmit');
+        const cancelSpecialEditButton = document.getElementById('cancelSpecialEdit');
+        const specialFormMessage = document.getElementById('specialFormMessage');
+        let todaySpecials = [];
+        let editingSpecialId = null;
+
+        function showTableMessage(message, isError = false) {
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 7;
+            cell.className = 'empty-message';
+            cell.textContent = message;
+            if (isError) cell.style.color = '#dc3545';
+            row.appendChild(cell);
+            tableBody.replaceChildren(row);
+        }
+
+        function addCell(row, value, className = '') {
+            const cell = document.createElement('td');
+            if (className) cell.className = className;
+            cell.textContent = value || '—';
+            row.appendChild(cell);
+            return cell;
+        }
+
+        function createButton(label, className, onClick) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = className;
+            button.textContent = label;
+            button.addEventListener('click', onClick);
+            return button;
+        }
+
+        function renderReservations(reservations) {
+            tableBody.replaceChildren();
+
+            if (reservations.length === 0) {
+                showTableMessage('No reservations yet.');
+                return;
+            }
+
+            [...reservations].reverse().forEach((reservation) => {
+                const row = document.createElement('tr');
+                addCell(row, reservation.date || 'Just now');
+                addCell(row, reservation.name, 'customer-name');
+                addCell(row, reservation.email || 'No email');
+                addCell(row, reservation.phone);
+                addCell(row, String(reservation.guests || '—'));
+
+                const statusCell = document.createElement('td');
+                const badge = document.createElement('span');
+                const confirmed = reservation.status === 'confirmed';
+                badge.className = `status-badge ${confirmed ? 'status-confirmed' : 'status-pending'}`;
+                badge.textContent = confirmed ? 'Confirmed' : 'Pending';
+                statusCell.appendChild(badge);
+                row.appendChild(statusCell);
+
+                const actions = document.createElement('td');
+                if (confirmed) {
+                    const confirmedButton = createButton('Confirmed', 'btn-confirm', () => {});
+                    confirmedButton.disabled = true;
+                    actions.appendChild(confirmedButton);
+                } else {
+                    const confirmButton = createButton('Confirm', 'btn-confirm', () => confirmBooking(reservation.id));
+                    if (!reservation.email) {
+                        confirmButton.disabled = true;
+                        confirmButton.title = 'This older reservation has no email address.';
+                    }
+                    actions.appendChild(confirmButton);
+                }
+
+                actions.appendChild(createButton('Delete', 'btn-delete', () => deleteBooking(reservation.id)));
+                row.appendChild(actions);
+                tableBody.appendChild(row);
+            });
+        }
+
+        async function readJson(response) {
+            try {
+                return await response.json();
+            } catch {
+                return {};
+            }
+        }
+
+        async function fetchReservations() {
+            showTableMessage('Loading...');
+
+            try {
+                const response = await apiFetch('/api/reservations');
+                const data = await readJson(response);
+                if (!response.ok) throw new Error(data.message || 'Could not load reservations.');
+
+                const reservations = Array.isArray(data) ? data : [];
+                totalCount.textContent = `Total: ${reservations.length}`;
+                renderReservations(reservations);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                showTableMessage(error.message || 'Failed to connect to the server. Is server.js running?', true);
+            }
+        }
+
+        async function confirmBooking(id) {
+            if (!confirm('Confirm this reservation and send a confirmation email to the customer?')) return;
+
+            try {
+                const response = await apiFetch(`/api/reserve/${encodeURIComponent(id)}/confirm`, { method: 'POST' });
+                const result = await readJson(response);
+                if (!response.ok) throw new Error(result.message || 'Could not confirm this reservation.');
+
+                alert(result.message);
+                fetchReservations();
+            } catch (error) {
+                alert(error.message || 'Server error! Could not confirm the reservation.');
+            }
+        }
+
+        async function deleteBooking(id) {
+            if (!confirm('Delete this reservation permanently?')) return;
+
+            try {
+                const response = await fetch(`/api/reserve/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                const result = await readJson(response);
+                if (!response.ok) throw new Error(result.message || 'Could not delete this reservation.');
+
+                alert(result.message);
+                fetchReservations();
+            } catch (error) {
+                alert(error.message || 'Server error! Could not delete.');
+            }
+        }
+
+        function showSpecialTableMessage(message, isError = false) {
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 3;
+            cell.className = 'empty-message';
+            cell.textContent = message;
+            if (isError) cell.style.color = '#dc3545';
+            row.appendChild(cell);
+            specialTableBody.replaceChildren(row);
+        }
+
+        function formatSpecialPrice(price) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 2
+            }).format(Number(price));
+        }
+
+        function renderTodaySpecials(items) {
+            specialTableBody.replaceChildren();
+
+            if (items.length === 0) {
+                showSpecialTableMessage('No today specials added yet.');
+                return;
+            }
+
+            items.forEach((special) => {
+                const row = document.createElement('tr');
+                addCell(row, special.name, 'customer-name');
+                addCell(row, formatSpecialPrice(special.price));
+
+                const actions = document.createElement('td');
+                actions.appendChild(createButton('Edit', 'btn-edit', () => beginSpecialEdit(special.id)));
+                actions.appendChild(createButton('Delete', 'btn-delete', () => deleteTodaySpecial(special.id)));
+                row.appendChild(actions);
+                specialTableBody.appendChild(row);
+            });
+        }
+
+        function showSpecialFormMessage(message = '', isError = false) {
+            specialFormMessage.textContent = message;
+            specialFormMessage.classList.toggle('error', isError);
+        }
+
+        function resetSpecialForm() {
+            editingSpecialId = null;
+            specialForm.reset();
+            specialFormTitle.textContent = "Add Today's Special";
+            specialSubmitButton.textContent = 'Add Special';
+            cancelSpecialEditButton.hidden = true;
+        }
+
+        function beginSpecialEdit(id) {
+            const special = todaySpecials.find((item) => item.id === id);
+            if (!special) return;
+
+            editingSpecialId = id;
+            specialNameInput.value = special.name;
+            specialPriceInput.value = special.price;
+            specialFormTitle.textContent = "Edit Today's Special";
+            specialSubmitButton.textContent = 'Save Changes';
+            cancelSpecialEditButton.hidden = false;
+            showSpecialFormMessage('Editing this special. Save when ready.');
+            specialNameInput.focus();
+        }
+
+        async function fetchTodaySpecials() {
+            showSpecialTableMessage("Loading today's specials...");
+
+            try {
+                const response = await fetch('/api/today-specials', { cache: 'no-store' });
+                const data = await readJson(response);
+                if (!response.ok) throw new Error(data.message || "Could not load today's specials.");
+
+                todaySpecials = Array.isArray(data) ? data : [];
+                specialCount.textContent = `Total: ${todaySpecials.length}`;
+                renderTodaySpecials(todaySpecials);
+            } catch (error) {
+                console.error('Error fetching today specials:', error);
+                showSpecialTableMessage(error.message || "Could not load today's specials.", true);
+            }
+        }
+
+        async function saveTodaySpecial(event) {
+            event.preventDefault();
+            const payload = {
+                name: specialNameInput.value.trim(),
+                price: specialPriceInput.value
+            };
+            const editing = Boolean(editingSpecialId);
+            const url = editing
+                ? `/api/today-specials/${encodeURIComponent(editingSpecialId)}`
+                : '/api/today-specials';
+
+            specialSubmitButton.disabled = true;
+            showSpecialFormMessage(editing ? 'Saving changes...' : 'Adding special...');
+
+            try {
+                const response = await apiFetch(url, {
+                    method: editing ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await readJson(response);
+                if (!response.ok) throw new Error(result.message || 'Could not save this special.');
+
+                resetSpecialForm();
+                showSpecialFormMessage(result.message);
+                await fetchTodaySpecials();
+            } catch (error) {
+                showSpecialFormMessage(error.message || 'Could not save this special.', true);
+            } finally {
+                specialSubmitButton.disabled = false;
+            }
+        }
+        async function deleteTodaySpecial(id) {
+            if (!confirm('Delete this today special?')) return;
+            try {
+                // এখানে শুধু apiFetch হবে, fetch নয়
+                const response = await apiFetch(`/api/today-specials/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                const result = await readJson(response);
+                if (!response.ok) throw new Error(result.message || 'Could not delete this special.');
+
+                if (editingSpecialId === id) resetSpecialForm();
+                showSpecialFormMessage(result.message);
+                await fetchTodaySpecials();
+            } catch (error) {
+                showSpecialFormMessage(error.message || 'Could not delete this special.', true);
+            }
+        }
+
+        async function deleteBooking(id) {
+            if (!confirm('Delete this reservation permanently?')) return;
+
+            try {
+                const response = await apiFetch(`/api/reserve/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                const result = await readJson(response);
+                if (!response.ok) throw new Error(result.message || 'Could not delete this reservation.');
+
+                alert(result.message);
+                fetchReservations();
+            } catch (error) {
+                alert(error.message || 'Server error! Could not delete.');
+            }
+        }
+        cancelSpecialEditButton.addEventListener('click', () => {
+            resetSpecialForm();
+            showSpecialFormMessage('Edit cancelled.');
+        });
+        specialForm.addEventListener('submit', saveTodaySpecial);
+
+
+        function refreshDashboard() {
+            fetchReservations();
+            fetchTodaySpecials();
+            fetchFullMenu();
+            fetchAdminReviews(); 
+            fetchLiveOrders(); 
+        }
+
+        // Tab Switching Logic
+        function switchTab(event, tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            if(event) event.currentTarget.classList.add('active');
+        }
+        // ==========================================
+        // FULL MENU MANAGEMENT LOGIC
+        // ==========================================
+        const fullMenuTableBody = document.getElementById('fullMenuTable');
+        const menuCount = document.getElementById('menuCount');
+        const fullMenuForm = document.getElementById('fullMenuForm');
+        const fullMenuFormTitle = document.getElementById('fullMenuFormTitle');
+        const menuNameInput = document.getElementById('menuName');
+        const menuCategoryInput = document.getElementById('menuCategory');
+        const menuPriceInput = document.getElementById('menuPrice');
+        const menuSubmitButton = document.getElementById('menuSubmit');
+        const cancelMenuEditButton = document.getElementById('cancelMenuEdit');
+        const fullMenuFormMessage = document.getElementById('fullMenuFormMessage');
+        let fullMenuItems = [];
+        let editingMenuId = null;
+
+        function showFullMenuMessage(message = '', isError = false) {
+            fullMenuFormMessage.textContent = message;
+            fullMenuFormMessage.classList.toggle('error', isError);
+        }
+
+        function showMenuTableMessage(message, isError = false) {
+            const row = document.createElement('tr');
+            const cell = document.createElement('td');
+            cell.colSpan = 4;
+            cell.className = 'empty-message';
+            cell.textContent = message;
+            if (isError) cell.style.color = '#dc3545';
+            row.appendChild(cell);
+            fullMenuTableBody.replaceChildren(row);
+        }
+
+        function renderFullMenu(items) {
+            fullMenuTableBody.replaceChildren();
+            if (items.length === 0) {
+                showMenuTableMessage('No menu items added yet.');
+                return;
+            }
+            items.forEach((item) => {
+                const row = document.createElement('tr');
+                addCell(row, item.name, 'customer-name');
+                
+                const catCell = addCell(row, item.category);
+                catCell.style.fontWeight = '600';
+                catCell.style.color = '#888';
+                catCell.style.fontSize = '0.8rem';
+                
+                addCell(row, formatSpecialPrice(item.price));
+
+                const actions = document.createElement('td');
+                actions.appendChild(createButton('Edit', 'btn-edit', () => beginMenuEdit(item.id)));
+                actions.appendChild(createButton('Delete', 'btn-delete', () => deleteMenuItem(item.id)));
+                row.appendChild(actions);
+                fullMenuTableBody.appendChild(row);
+            });
+        }
+
+        async function fetchFullMenu() {
+            showMenuTableMessage("Loading menu...");
+            try {
+                const response = await apiFetch('/api/menu');
+                const data = await readJson(response);
+                if (!response.ok) throw new Error(data.message || "Could not load menu.");
+
+                fullMenuItems = Array.isArray(data) ? data : [];
+                menuCount.textContent = `Total: ${fullMenuItems.length}`;
+                renderFullMenu(fullMenuItems);
+            } catch (error) {
+                showMenuTableMessage(error.message || "Could not load menu.", true);
+            }
+        }
+        function refreshDashboard() {
+            fetchReservations();
+            fetchTodaySpecials();
+            fetchFullMenu();
+            fetchAdminReviews(); 
+            fetchLiveOrders(); 
+        }
+
+        function resetMenuForm() {
+            editingMenuId = null;
+            fullMenuForm.reset();
+            fullMenuFormTitle.textContent = "Add Menu Item";
+            menuSubmitButton.textContent = 'Add Item';
+            cancelMenuEditButton.hidden = true;
+        }
+
+        function beginMenuEdit(id) {
+            const item = fullMenuItems.find((i) => i.id === id);
+            if (!item) return;
+
+            editingMenuId = id;
+            menuNameInput.value = item.name;
+            menuCategoryInput.value = item.category;
+            menuPriceInput.value = item.price;
+            
+            fullMenuFormTitle.textContent = "Edit Menu Item";
+            menuSubmitButton.textContent = 'Save Changes';
+            cancelMenuEditButton.hidden = false;
+            showFullMenuMessage('Editing this item. Save when ready.');
+            menuNameInput.focus();
+        }
+
+        async function saveMenuItem(event) {
+            event.preventDefault();
+            const payload = {
+                name: menuNameInput.value.trim(),
+                category: menuCategoryInput.value,
+                price: menuPriceInput.value
+            };
+            
+            const editing = Boolean(editingMenuId);
+            const url = editing ? `/api/menu/${encodeURIComponent(editingMenuId)}` : '/api/menu';
+
+            menuSubmitButton.disabled = true;
+            showFullMenuMessage(editing ? 'Saving changes...' : 'Adding item...');
+
+            try {
+                const response = await apiFetch(url, {
+                    method: editing ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await readJson(response);
+                if (!response.ok) throw new Error(result.message || 'Could not save item.');
+
+                resetMenuForm();
+                showFullMenuMessage(result.message);
+                await fetchFullMenu();
+            } catch (error) {
+                showFullMenuMessage(error.message || 'Could not save item.', true);
+            } finally {
+                menuSubmitButton.disabled = false;
+            }
+        }
+
+        async function deleteMenuItem(id) {
+            if (!confirm('Delete this menu item?')) return;
+
+            try {
+                const response = await apiFetch(`/api/menu/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                const result = await readJson(response);
+                if (!response.ok) throw new Error(result.message || 'Could not delete item.');
+
+                if (editingMenuId === id) resetMenuForm();
+                showFullMenuMessage(result.message);
+                await fetchFullMenu();
+            } catch (error) {
+                showFullMenuMessage(error.message || 'Could not delete item.', true);
+            }
+        }
+
+        cancelMenuEditButton.addEventListener('click', () => {
+            resetMenuForm();
+            showFullMenuMessage('Edit cancelled.');
+        });
+        fullMenuForm.addEventListener('submit', saveMenuItem);
+                window.onload = () => {
+                    if (!localStorage.getItem('adminToken')) {
+                        document.getElementById('loginScreen').style.display = 'flex';
+                    } else {
+                        document.getElementById('loginScreen').style.display = 'none';
+                        refreshDashboard();
+                    }
+                };
+                // ==========================================
+        // REVIEWS MANAGEMENT
+        // ==========================================
+        async function fetchAdminReviews() {
+            const tbody = document.getElementById('adminReviewsTable');
+            try {
+                const res = await apiFetch('/api/admin/reviews');
+                const reviews = await res.json();
+                tbody.innerHTML = '';
+                
+                if(reviews.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="empty-message">No reviews found.</td></tr>`;
+                    return;
+                }
+
+                // নতুন রিভিউ আগে দেখাবে
+                reviews.reverse().forEach(r => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="customer-name">${r.name}</td>
+                        <td style="color: #B89768; font-weight: bold;">${r.rating} ⭐</td>
+                        <td>${r.comment}</td>
+                        <td><span class="status-badge ${r.status === 'approved' ? 'status-confirmed' : 'status-pending'}">${r.status}</span></td>
+                        <td>
+                            ${r.status !== 'approved' ? `<button class="btn-confirm" onclick="approveReview('${r.id}')">Approve</button>` : ''}
+                            <button class="btn-delete" onclick="deleteReview('${r.id}')">Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            } catch (err) { 
+                tbody.innerHTML = `<tr><td colspan="5" class="empty-message">Failed to load reviews.</td></tr>`; 
+            }
+        }
+
+        async function approveReview(id) {
+            if(!confirm('Approve this review to show on the website?')) return;
+            try {
+                await apiFetch(`/api/admin/reviews/${id}/approve`, { method: 'PUT' });
+                fetchAdminReviews();
+            } catch(e) {
+                alert('Could not approve review.');
+            }
+        }
+
+        async function deleteReview(id) {
+            if(!confirm('Delete this review permanently?')) return;
+            try {
+                await apiFetch(`/api/admin/reviews/${id}`, { method: 'DELETE' });
+                fetchAdminReviews();
+            } catch(e) {
+                alert('Could not delete review.');
+            }
+        }
+        // ==========================================
+        // LIVE ORDERS MANAGEMENT
+        // ==========================================
+        // ==========================================
+        // LIVE ORDERS & BILLING MODAL LOGIC
+        // ==========================================
+        let allLiveOrders = []; // সব অর্ডার মেমোরিতে সেভ রাখার জন্য
+
+        async function fetchLiveOrders() {
+            const tbody = document.getElementById('adminOrdersTable');
+            try {
+                const res = await apiFetch('/api/admin/orders');
+                allLiveOrders = await res.json();
+                filterLiveOrders(); // ডেটা এনে ফিল্টার ফাংশন কল করা হলো
+            } catch (err) { 
+                console.error(err); 
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-message" style="text-align:center; padding:20px; color:#dc3545;">Error loading live orders.</td></tr>`;
+            }
+        }
+
+        // ফিল্টার এবং সার্চ হ্যান্ডেল করার ফাংশন
+        function filterLiveOrders() {
+            const tbody = document.getElementById('adminOrdersTable');
+            const dateFilter = document.getElementById('orderDateFilter').value;
+            const customDateInput = document.getElementById('orderCustomDate');
+            const searchQuery = document.getElementById('orderSearchInput').value.toLowerCase().trim();
+
+            // যদি কাস্টম ডেট সিলেক্ট করা হয়, তবে ডেট পিকার দেখাবে
+            if (dateFilter === 'custom') {
+                customDateInput.style.display = 'inline-block';
+            } else {
+                customDateInput.style.display = 'none';
+            }
+
+            const todayStr = new Date().toDateString();
+            const yesterdayObj = new Date();
+            yesterdayObj.setDate(yesterdayObj.getDate() - 1);
+            const yesterdayStr = yesterdayObj.toDateString();
+
+            const filtered = allLiveOrders.filter(o => {
+                const orderDate = new Date(o.createdAt || Date.now());
+                const orderDateStr = orderDate.toDateString();
+
+                // ১. ডেট ফিল্টার ম্যাচিং
+                let matchesDate = true;
+                if (dateFilter === 'today') {
+                    matchesDate = (orderDateStr === todayStr);
+                } else if (dateFilter === 'yesterday') {
+                    matchesDate = (orderDateStr === yesterdayStr);
+                } else if (dateFilter === 'custom' && customDateInput.value) {
+                    const customDateStr = new Date(customDateInput.value).toDateString();
+                    matchesDate = (orderDateStr === customDateStr);
+                }
+
+                // ২. সার্চ কুয়েরি ম্যাচিং (Order ID, Name বা Table No)
+                const matchesSearch = !searchQuery || 
+                    (o.orderId && o.orderId.toLowerCase().includes(searchQuery)) ||
+                    (o.customerName && o.customerName.toLowerCase().includes(searchQuery)) ||
+                    (o.tableNumber && String(o.tableNumber).toLowerCase().includes(searchQuery));
+
+                return matchesDate && matchesSearch;
+            });
+
+            renderLiveOrders(filtered);
+        }
+
+        // টেবিল রেন্ডার করার ফাংশন (যেখানে Today / Yesterday লেবেল দেখাবে)
+        function renderLiveOrders(orders) {
+            const tbody = document.getElementById('adminOrdersTable');
+            tbody.innerHTML = '';
+            
+            if (!orders || orders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-message" style="text-align:center; padding:20px; color:#777;">No matching live orders found.</td></tr>`;
+                return;
+            }
+
+            const todayStr = new Date().toDateString();
+            const yesterdayObj = new Date();
+            yesterdayObj.setDate(yesterdayObj.getDate() - 1);
+            const yesterdayStr = yesterdayObj.toDateString();
+
+            orders.forEach(o => {
+                let statusColor = o.status === 'Received' ? 'status-pending' : (o.status === 'Preparing' ? 'status-pending' : 'status-confirmed');
+                
+                const orderDate = new Date(o.createdAt || Date.now());
+                const orderDateStr = orderDate.toDateString();
+                const timeString = orderDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+                // আজকের ডেট হলে "Today", গতকাল হলে "Yesterday", অন্যথায় মূল তারিখ দেখাবে
+                let dateLabel = '';
+                if (orderDateStr === todayStr) {
+                    dateLabel = `Today <br><strong style="color:#1a1a1a;">${timeString}</strong>`;
+                } else if (orderDateStr === yesterdayStr) {
+                    dateLabel = `Yesterday <br><strong style="color:#1a1a1a;">${timeString}</strong>`;
+                } else {
+                    const dateStr = orderDate.toLocaleDateString('en-IN');
+                    dateLabel = `${dateStr} <br><strong style="color:#1a1a1a;">${timeString}</strong>`;
+                }
+
+                const orderData = encodeURIComponent(JSON.stringify(o));
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-size:0.85rem; color:#666; vertical-align: middle;">
+                        ${dateLabel}
+                    </td>
+                    <td style="vertical-align: middle;">
+                        <a href="javascript:void(0)" onclick="openAdminBillModal('${orderData}')" style="color:var(--gold); font-weight:bold; text-decoration:underline;">
+                            ${o.orderId}
+                        </a>
+                    </td>
+                    <td style="font-weight:600; text-transform:capitalize; vertical-align: middle;">
+                        ${o.customerName || 'N/A'}
+                    </td>
+                    <td style="vertical-align: middle;">
+                        <a href="javascript:void(0)" onclick="openAdminBillModal('${orderData}')" style="color:var(--dark); font-size:1.1rem; font-weight:bold; text-decoration:underline;">
+                            T-${o.tableNumber}
+                        </a>
+                    </td>
+                    <td style="vertical-align: middle;"><span class="status-badge ${statusColor}">${o.status}</span></td>
+                    <td style="display:flex; gap:10px; align-items:center; vertical-align: middle;">
+                        <select onchange="updateOrderStatus('${o.id || o._id}', this.value)" style="padding:6px; border-radius:3px; outline:none; border:1px solid #ccc; cursor:pointer;">
+                            <option value="Received" ${o.status === 'Received' ? 'selected' : ''}>Received</option>
+                            <option value="Preparing" ${o.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
+                            <option value="Served" ${o.status === 'Served' ? 'selected' : ''}>Served</option>
+                        </select>
+                        <button onclick="deleteOrder('${o.id || o._id}')" style="background:#dc3545; color:white; border:none; padding:7px 12px; border-radius:3px; cursor:pointer;" title="Delete Order">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        async function updateOrderStatus(id, status) {
+            try {
+                await apiFetch(`/api/admin/orders/${id}/status`, {
+                    method: 'PUT', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                fetchLiveOrders();
+            } catch(e) { alert("Could not update status."); }
+        }
+
+        async function deleteOrder(id) {
+            if(!confirm('Are you sure you want to delete this order?')) return;
+            try {
+                await apiFetch(`/api/admin/orders/${id}`, { method: 'DELETE' });
+                fetchLiveOrders();
+            } catch(e) { alert("Could not delete order."); }
+        }
+
+        // ==========================================
+        // BILL / RECEIPT GENERATOR LOGIC
+        // ==========================================
+        function openAdminBillModal(encodedData) {
+            const order = JSON.parse(decodeURIComponent(encodedData));
+            
+            document.getElementById('billOrderId').innerText = order.orderId;
+            document.getElementById('billTableNo').innerText = order.tableNumber;
+            // কাস্টমারের নাম ও ইমেইল বসানো
+            document.getElementById('billCustomerName').innerText = order.customerName || 'N/A';
+            document.getElementById('billCustomerEmail').innerText = order.email || 'N/A';
+            document.getElementById('billDateTime').innerText = new Date(order.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+            
+            // আইটেমগুলো Group করা (যেমন: Water x 2)
+            const itemCounts = {};
+            order.items.forEach(item => {
+                if(itemCounts[item.name]) {
+                    itemCounts[item.name].qty += 1;
+                    itemCounts[item.name].price += item.price;
+                } else {
+                    itemCounts[item.name] = { qty: 1, price: item.price };
+                }
+            });
+
+            let itemsHTML = '';
+            for(const [name, data] of Object.entries(itemCounts)) {
+                itemsHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="font-weight:600;">${name} <span style="color:#888; font-size:0.9em; margin-left:5px;">x ${data.qty}</span></span>
+                                <span>₹${data.price}</span>
+                              </div>`;
+            }
+            document.getElementById('billItemsList').innerHTML = itemsHTML;
+            document.getElementById('billTotalAmount').innerText = order.totalAmount;
+            
+            document.getElementById('adminBillModal').style.display = 'block';
+            document.getElementById('adminModalOverlay').style.display = 'block';
+        }
+
+        function closeAdminBillModal() {
+            document.getElementById('adminBillModal').style.display = 'none';
+            document.getElementById('adminModalOverlay').style.display = 'none';
+        }
+        
+        // ==========================================
+        // REFRESH & TAB LOGIC
+        // ==========================================
+        function refreshDashboard() {
+            fetchReservations();
+            fetchTodaySpecials();
+            fetchFullMenu();
+            fetchAdminReviews(); 
+            fetchLiveOrders(); 
+        }
+
+        function switchTab(event, tabId) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            if(event) event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

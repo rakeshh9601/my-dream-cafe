@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dream Cafe | Welcome</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ========================================= */
+        /* GLOBAL SETTINGS                           */
+        /* ========================================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        :root {
+            --gold: #B89768; 
+            --dark: #1a1a1a;
+            --light-bg: #EAE0D5; /* একটু গাঢ় কফি শেড (কিছু ডিজাইনের ব্যাকগ্রাউন্ডের জন্য) */
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            color: #333; 
+            background-color: #F6EFE9; /* লাইট ল্যাটে / কফি শেড (পুরো ওয়েবসাইটের জন্য) */
+            overflow-x: hidden; 
+        }
+
+        /* ========================================= */
+        /* NAVBAR (WHITE RIBBON EFFECT)              */
+        /* ========================================= */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 25px 5%; position: fixed; top: 0; left: 0; width: 100%;
+            z-index: 1000; background-color: transparent; transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            background-color: rgba(255, 255, 255, 0.98); 
+            padding: 12px 5%; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .logo-container {
+            width: 100px; height: 100px; background-color: white; border-radius: 50%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: all 0.4s ease;
+        }
+        
+        nav.scrolled .logo-container { width: 70px; height: 70px; border: 1px solid #eee; box-shadow: none; }
+        nav.scrolled .logo-main { font-size: 1.3rem; }
+        nav.scrolled .logo-sub { font-size: 0.5rem; margin-top: 2px; }
+        nav.scrolled .logo-tag { display: none; } 
+
+        .logo-main { font-family: 'Dancing Script', cursive; font-size: 2rem; color: var(--dark); line-height: 1; transition: 0.3s; }
+        .logo-sub { font-family: 'Montserrat', sans-serif; font-size: 0.7rem; text-transform: uppercase; font-weight: 700; color: var(--gold); letter-spacing: 1.5px; margin-top: 5px; transition: 0.3s; }
+        .logo-tag { font-size: 0.4rem; letter-spacing: 2px; color: #888; margin-top: 5px; text-transform: uppercase; }
+
+        .nav-center { display: flex; gap: 35px; list-style: none; }
+        .nav-center a { 
+            color: white; text-decoration: none; font-size: 0.75rem; font-weight: 600; 
+            letter-spacing: 2px; text-transform: uppercase; transition: 0.3s; 
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5); 
+        }
+        .nav-center a:hover { color: var(--gold); }
+        
+        nav.scrolled .nav-center a { color: var(--dark); font-weight: 700; text-shadow: none; }
+        nav.scrolled .nav-center a:hover { color: var(--gold); }
+
+
+        /* ========================================= */
+        /* 1. HERO SECTION (FIXED PARALLAX + ANIMATION) */
+        /* ========================================= */
+        .hero-section {
+            height: 100vh;
+            background: linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%), 
+                        url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=1920&auto=format&fit=crop') center/cover fixed;
+            position: relative; color: white;
+            display: flex; align-items: center; padding-left: 8%;
+        }
+
+        .hero-content { max-width: 800px; }
+        
+        /* Floating Animation Magic */
+        @keyframes floatInUp {
+            0% { opacity: 0; transform: translateY(40px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-text { 
+            font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--gold); font-weight: 500; margin-bottom: -5px; 
+            opacity: 0; animation: floatInUp 1s ease-out forwards; animation-delay: 0.3s; 
+        }
+        .main-title { 
+            font-family: 'Playfair Display', serif; font-size: 4.5rem; letter-spacing: 4px; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; line-height: 1.1; 
+            opacity: 0; animation: floatInUp 1s ease-out forwards; animation-delay: 0.6s; 
+        }
+        .subtitle { 
+            font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 500; letter-spacing: 3px; margin-bottom: 15px; text-transform: uppercase; color: #ddd; 
+            opacity: 0; animation: floatInUp 1s ease-out forwards; animation-delay: 0.9s; 
+        }
+        .contact-info { 
+            font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: 1.5px; margin-bottom: 40px; 
+            opacity: 0; animation: floatInUp 1s ease-out forwards; animation-delay: 1.2s; 
+        }
+
+        .btn-hero-reserve {
+            border: 1px solid var(--gold); background-color: var(--gold); color: #fff; padding: 15px 40px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer; transition: all 0.4s ease; border-radius: 3px;
+            opacity: 0; animation: floatInUp 1s ease-out forwards; animation-delay: 1.5s; 
+        }
+        .btn-hero-reserve:hover { background-color: transparent; color: var(--gold); }
+
+
+        /* ========================================= */
+        /* OVERLAPPING LAYOUT WITH PARALLAX PHOTOS   */
+        /* ========================================= */
+        .section-padding { padding: 100px 5%; background-color: var(--light-bg); }
+        
+        .overlap-container {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .overlap-reverse { flex-direction: row-reverse; }
+
+        .overlap-img {
+            width: 60%;
+            height: 550px;
+            background-attachment: fixed; /* Chobi ekhane atke thakbe */
+            background-position: center;
+            background-size: cover;
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        /* 2. ABOUT US PARALLAX IMAGE */
+        .bg-about {
+            background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1920&auto=format&fit=crop');
+        }
+
+        /* 3. MENU PARALLAX IMAGE */
+        .bg-menu {
+            background-image: url('https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=1920&auto=format&fit=crop');
+        }
+
+        .overlap-text {
+            width: 50%;
+            background-color: #fff;
+            padding: 60px 50px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.08);
+            margin-left: -10%; /* Overlap */
+            z-index: 2;
+            position: relative;
+            text-align: left;
+        }
+        .overlap-reverse .overlap-text {
+            margin-left: 0;
+            margin-right: -10%;
+        }
+
+        .overlap-title { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--dark); line-height: 1.1; margin-bottom: 10px; }
+        .overlap-cursive { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--gold); text-transform: none; letter-spacing: 1px; font-weight: 600; }
+        .overlap-subtitle { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 3px; color: #888; text-transform: uppercase; margin-bottom: 25px; font-weight: 600; }
+        .overlap-desc { font-size: 1rem; line-height: 1.8; color: #555; margin-bottom: 35px; }
+
+        .btn-dark {
+            border: 1px solid var(--dark); background-color: var(--dark); color: white; padding: 15px 35px;
+            text-decoration: none; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; transition: 0.4s; display: inline-block;
+        }
+        .btn-dark:hover { background-color: transparent; color: var(--dark); }
+
+        .menu-list-container { display: flex; flex-direction: column; gap: 20px; }
+        .menu-item { display: flex; align-items: baseline; width: 100%; }
+        .menu-name { font-family: 'Montserrat', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--dark); white-space: nowrap; }
+        .menu-dots { flex-grow: 1; border-bottom: 2px dotted #ccc; margin: 0 15px; position: relative; top: -5px; }
+        .menu-price { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.1rem; color: var(--gold); }
+        .menu-status { color: #777; font-size: 0.9rem; line-height: 1.6; }
+
+        /* ========================================= */
+        /* AUTHENTIC CAFE STYLE (Mocha & Cream) */
+        /* ========================================= */
+        body:not(.dark-mode) {
+            --light-bg: #E3D5C0 !important; /* Creamy Cappuccino */
+            background-color: #DFCEB6 !important; /* Authentic Coffee Milk */
+        }
+        
+        /* ওয়েবসাইটের সব বক্স, মেনু, এবং উইন্ডো */
+        body:not(.dark-mode) .logo-container,
+        body:not(.dark-mode) .overlap-text,
+        body:not(.dark-mode) .faq-section,
+        body:not(.dark-mode) #menu,
+        body:not(.dark-mode) #reserveModal, 
+        body:not(.dark-mode) #reviewModal, 
+        body:not(.dark-mode) #cartModal, 
+        body:not(.dark-mode) #paymentModal, 
+        body:not(.dark-mode) #receiptModal {
+            background-color: #F4EFE6 !important; /* Warm Milk Froth (আরামদায়ক ক্রিম) */
+            box-shadow: 0 10px 30px rgba(60, 42, 33, 0.12) !important; /* Espresso Shadow (কফি ব্রাউন শ্যাডো) */
+            border: 1px solid #CDBA9E !important;
+        }
+        
+        /* ওপরের ন্যাভবার */
+        body:not(.dark-mode) nav.scrolled {
+            background-color: rgba(244, 239, 230, 0.95) !important;
+        }
+        
+        /* ইনপুট বক্সগুলো */
+        body:not(.dark-mode) input, 
+        body:not(.dark-mode) select, 
+        body:not(.dark-mode) textarea {
+            background-color: #FFFDF9 !important;
+            border-color: #BCA688 !important;
+            color: #3C2A21 !important; /* Dark Coffee Text */
+        }
+        /* ========================================= */
+        /* DARK MODE STYLES                          */
+        /* ========================================= */
+        body.dark-mode { background-color: #121212; color: #eaeaea; }
+        body.dark-mode .section-padding { background-color: #1a1a1a !important; }
+        body.dark-mode .gallery-section, body.dark-mode .faq-section { background-color: #121212; }
+        
+        body.dark-mode nav.scrolled { background-color: rgba(18, 18, 18, 0.98); border-bottom: 1px solid #333; }
+        body.dark-mode nav.scrolled .logo-main, body.dark-mode nav.scrolled .nav-center a { color: #fff; }
+        
+        body.dark-mode .overlap-text { background-color: #222; box-shadow: 0 15px 50px rgba(0,0,0,0.5); }
+        body.dark-mode .overlap-title, body.dark-mode .faq-question, body.dark-mode .section-title, body.dark-mode .menu-name { color: #fff; }
+        body.dark-mode .overlap-desc, body.dark-mode .faq-answer { color: #bbb; }
+        body.dark-mode .menu-category h3 { border-bottom: 1px solid #333 !important; }
+        
+        body.dark-mode #reserveModal, body.dark-mode #reviewModal { background: #222 !important; color: #fff !important; box-shadow: 0 20px 50px rgba(255,255,255,0.05); }
+        body.dark-mode #reserveModal h2, body.dark-mode #reviewModal h2 { color: #fff !important; }
+        body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: #333 !important; color: #fff !important; border: 1px solid #444 !important; }
+        body.dark-mode button[style*="background:transparent"] { color: #ddd !important; border-color: #555 !important; }
+        /* Dark Mode Logo Adjustments */
+        body.dark-mode .logo-container { 
+            background-color: #1a1a1a; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.8); 
+            border: 1px solid #333;
+        }
+        body.dark-mode .logo-main { 
+            color: #fff; 
+        }
+        body.dark-mode nav.scrolled .logo-container {
+            background-color: #121212;
+            border-color: #333;
+        }
+        /* Theme Toggle Button Style */
+        .theme-toggle-btn {
+            background: transparent; border: none; color: white; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-left: 15px; display: inline-flex; align-items: center; justify-content: center; width: 35px; height: 35px; border-radius: 50%;
+        }
+        .theme-toggle-btn:hover { color: var(--gold); background: rgba(255,255,255,0.1); }
+        nav.scrolled .theme-toggle-btn { color: var(--dark); }
+        body.dark-mode nav.scrolled .theme-toggle-btn { color: #fff; }
+
+        /* ========================================= */
+        /* 4. REVIEWS SECTION (MOUNTAIN COFFEE BG)   */
+        /* ========================================= */
+        .reviews-section { 
+            padding: 100px 5%; 
+            text-align: center; 
+            /* Apnar pochonder Mountain with Coffee background */
+            background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.85)), 
+                        url('https://images.unsplash.com/photo-1453614512568-c4024d13c247?q=80&w=1920&auto=format&fit=crop') center/cover fixed;
+        }
+        .reviews-section .section-title { color: #fff; font-family: 'Playfair Display', serif; font-size: 2.8rem; margin-bottom: 10px; }
+        .reviews-section .section-subtitle { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 40px; font-weight: 600; }
+        
+        .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1100px; margin: 0 auto; }
+        
+        .review-card { padding: 40px 30px; border: 1px solid rgba(255,255,255,0.1); text-align: center; transition: 0.4s; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); border-radius: 5px; }
+        .review-card:hover { transform: translateY(-10px); background: rgba(0,0,0,0.8); border-color: var(--gold); }
+        .stars { color: var(--gold); margin-bottom: 20px; font-size: 0.9rem; letter-spacing: 2px; }
+        .review-text { font-family: 'Playfair Display', serif; font-style: italic; color: #ddd; line-height: 1.8; margin-bottom: 25px; font-size: 1.1rem; }
+        .reviewer-name { font-weight: 700; color: #fff; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+
+
+        /* ========================================= */
+        /* GALLERY & FAQS (NORMAL BACKGROUNDS)       */
+        /* ========================================= */
+        .gallery-section { background-color: var(--light-bg); padding: 100px 5%; text-align: center; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--dark); margin-bottom: 10px; }
+        .section-subtitle { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 40px; font-weight: 600; }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px; margin-top: 40px; }
+        .gallery-item { width: 100%; height: 300px; object-fit: cover; transition: transform 0.6s ease; cursor: pointer; border-radius: 3px; }
+        .gallery-item:hover { transform: scale(1.05); z-index: 2; position: relative; box-shadow: 0 15px 40px rgba(0,0,0,0.2); }
+
+        .faq-section { background-color: #fff; padding: 100px 5%; text-align: center; }
+        .faq-container { max-width: 800px; margin: 0 auto; text-align: left; }
+        .faq-item { border-bottom: 1px solid #eaeaea; margin-bottom: 10px; }
+        .faq-question { padding: 25px 0; font-family: 'Montserrat', sans-serif; font-size: 1rem; font-weight: 600; color: var(--dark); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .faq-question:hover { color: var(--gold); }
+        .faq-answer { max-height: 0; overflow: hidden; transition: all 0.4s ease; color: #666; line-height: 1.8; }
+        .faq-item.active .faq-answer { padding-bottom: 25px; max-height: 200px; }
+
+        /* ========================================= */
+        /* PREMIUM FOOTER                            */
+        /* ========================================= */
+        footer { background-color: var(--dark); color: white; padding: 80px 8% 30px 8%; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; margin-bottom: 50px; }
+        .footer-col h4 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 25px; color: var(--gold); letter-spacing: 1px; }
+        .footer-col p { color: #aaa; line-height: 2; font-size: 0.9rem; margin-bottom: 15px; font-weight: 400; }
+        .footer-col i.contact-icon { color: var(--gold); margin-right: 15px; font-size: 1rem; }
+        
+        .social-icons { margin-top: 25px; }
+        .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border: 1px solid #444; color: #fff; border-radius: 50%; margin-right: 15px; transition: 0.4s; text-decoration: none; }
+        .social-icons a:hover { background: var(--gold); border-color: var(--gold); color: #fff; transform: translateY(-3px); }
+        
+        .map-container { width: 100%; height: 200px; border: 1px solid #333; }
+        .map-container iframe { width: 100%; height: 100%; border: none; }
+        
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid #333; color: #777; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* Responsive Fixes */
+        @media (max-width: 900px) {
+            .nav-center { display: none; }
+            .hero-section { justify-content: center; padding-left: 5%; text-align: center; background-attachment: scroll; }
+            .main-title { font-size: 3rem; }
+            
+            .overlap-container, .overlap-reverse { flex-direction: column; }
+            .overlap-img { width: 100%; height: 350px; background-attachment: scroll; }
+            .overlap-text { width: 100%; margin-left: 0; margin-right: 0; padding: 40px 20px; box-shadow: none; border-top: 1px solid #eee; }
+            .reviews-section { background-attachment: scroll; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav>
+        <div class="logo-container">
+            <div class="logo-main">My Dream</div>
+            <div class="logo-sub">Cafe</div>
+            <div class="logo-tag">Pause . Sip . Relax</div>
+        </div>
+        
+        <ul class="nav-center">
+            <li><a href="#home">HOME</a></li>
+            <li><a href="#about">ABOUT US</a></li>
+            <li><a href="#menu">MENU</a></li>
+            <li><a href="#reviews">REVIEWS</a></li>
+            <li><a href="#gallery">GALLERY</a></li>
+            <li><a href="#contact">CONTACT US</a></li>
+            <!-- Dark Mode Toggle Button -->
+            <li>
+                <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- 1. HERO SECTION (WITH FLOATING TEXT ANIMATION) -->
+    <header class="hero-section" id="home">
+        <div class="hero-content">
+            <h2 class="welcome-text">Welcome to</h2>
+            <h1 class="main-title">MY DREAM CAFE</h1>
+            <p class="subtitle">WHERE EVERY JOURNEY FINDS PEACE & COMFORT</p>
+            <p class="contact-info">BOOK ONLINE OR CALL (+91) 914433374</p>
+            <button class="btn-hero-reserve">RESERVATION</button>
+        </div>
+    </header>
+
+    <!-- 2. ABOUT SECTION (Fixed Parallax + Overlap) -->
+    <section class="section-padding" id="about">
+        <div class="overlap-container">
+            <div class="overlap-img bg-about"></div> 
+            
+            <div class="overlap-text">
+                <h2 class="overlap-title"><span class="overlap-cursive">Your</span><br>COZY CORNER</h2>
+                <p class="overlap-subtitle">THE TASTE OF TOGETHERNESS</p>
+                <p class="overlap-desc">At My Dream Cafe, we believe every journey deserves a peaceful pause. Inspired by the spirit of travelers and dreamers, our café is a cozy retreat where people come together to relax, reconnect, and create unforgettable memories. Whether you’re starting your morning with a freshly brewed coffee, or sharing delicious food with friends, every moment here is designed to make you feel at home.</p>
+                <a href="#gallery" class="btn-dark">VIEW GALLERY</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. TODAY'S SPECIAL SECTION -->
+    <section class="section-padding" id="menu" style="background-color: #fff;">
+        <div class="overlap-container overlap-reverse">
+            <div class="overlap-img bg-menu"></div> 
+            
+            <div class="overlap-text">
+                <h2 class="overlap-title"><span class="overlap-cursive">Amazing</span><br>DELICIOUS</h2>
+                <p class="overlap-subtitle">TODAY'S SPECIAL</p>
+                
+                <div class="menu-list-container" id="todaySpecials" aria-live="polite">
+                    <p class="menu-status">Loading today’s specials...</p>
+                </div>
+
+                <!-- VIEW FULL MENU BUTTON -->
+                <div style="margin-top: 40px; text-align: center;">
+                    <button class="btn-dark" id="viewMenuBtn" onclick="toggleFullMenu()" style="width: 100%;">VIEW FULL MENU</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FULL MENU SECTION (Hidden by default) -->
+    <section class="section-padding" id="full-menu" style="background-color: var(--light-bg); padding-top: 80px; display: none;">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 class="section-title">Explore Our Menu</h2>
+            <p class="section-subtitle">DELICIOUS OFFERINGS FOR EVERY CRAVING</p>
+        </div>
+        
+        <div id="fullMenuContainer" style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; padding: 0 20px;">
+            <p class="menu-status" style="text-align: center; grid-column: 1 / -1;">Loading our delicious menu...</p>
+        </div>
+    </section>
+
+    <!-- 4. REVIEWS SECTION (Mountain with Coffee Parallax Background) -->
+    <section class="reviews-section" id="reviews">
+        
+        <!-- হেডিং এবং বাটন পাশাপাশি রাখার জন্য Flexbox -->
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto 50px auto; flex-wrap: wrap; gap: 20px; padding: 0 20px;">
+            <div style="text-align: left;">
+                <h2 class="section-title" style="color: #fff; margin-bottom: 5px;">What Our Guests Say</h2>
+                <p class="section-subtitle" style="margin-bottom: 0;">REAL REVIEWS FROM REAL PEOPLE</p>
+            </div>
+            <button class="btn-hero-reserve" onclick="openReviewModal()" style="animation: none; opacity: 1;">LEAVE YOUR FEEDBACK</button>
+        </div>
+        
+        <!-- ডাইনামিক রিভিউগুলো এই বক্সের ভেতরে আসবে -->
+        <div class="review-grid"></div>
+
+    </section>
+    <!-- GALLERY SECTION -->
+    <section class="gallery-section" id="gallery">
+        <h2 class="section-title">Our Gallery</h2>
+        <p class="section-subtitle">MOMENTS CAPTURED AT MY DREAM CAFE</p>
+        <div class="gallery-grid">
+            <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?q=80&w=600&auto=format&fit=crop" alt="Gallery 1" class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?q=80&w=600&auto=format&fit=crop" alt="Gallery 2" class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=600&auto=format&fit=crop" alt="Gallery 3" class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?q=80&w=600&auto=format&fit=crop" alt="Gallery 4" class="gallery-item">
+        </div>
+    </section>
+
+    <!-- FAQ SECTION -->
+    <section class="faq-section" id="faq">
+        <h2 class="section-title">Common Questions</h2>
+        <p class="section-subtitle">FREQUENTLY ASKED QUESTIONS (FAQS)</p>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Do you have free Wi-Fi?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer"><p>Yes! We provide high-speed complimentary Wi-Fi for all our guests. Feel free to bring your laptop and work or study.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Is car parking available?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer"><p>We have a dedicated parking space right in front of the cafe for 2-wheelers, and street parking is easily available for cars.</p></div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    <span>Do you allow pets?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer"><p>We love furry friends! Our outdoor seating area is completely pet-friendly, so feel free to bring them along.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREMIUM FOOTER -->
+    <footer id="contact">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Get in Touch</h4>
+                <p><i class="fa-solid fa-location-dot contact-icon"></i> 123 Mountain View Road, Darjeeling</p>
+                <p><i class="fa-solid fa-phone contact-icon"></i> +91 9144337774</p>
+                <p><i class="fa-solid fa-envelope contact-icon"></i> rh@mydreamcafe.com</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4>Opening Hours</h4>
+                <p><span style="color: #fff; font-weight: 500;">Monday - Sunday</span><br>07:00 AM - 10:00 PM</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Find Us</h4>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28362.88094605995!2d88.24354228946764!3d27.034509749174353!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e42e654cf501bb%3A0x4175555979d4702a!2sDarjeeling%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>Copyright © 2026 My Dream Café. Powered by rakeshh9601.vercel.app</p>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- RESERVATION MODAL & TOAST NOTIFICATION     -->
+    <!-- ========================================== -->
+    <div id="modalOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:999; backdrop-filter: blur(5px);"></div>
+
+    <div id="reserveModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:50px 40px; border-radius:3px; z-index:1000; width:90%; max-width:400px; text-align:center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+        <h2 style="font-family:'Playfair Display', serif; color:var(--dark); margin-bottom:10px; font-size: 2.2rem;">Book a Table</h2>
+        <p style="font-size:0.85rem; color:#888; margin-bottom:30px; font-family:'Montserrat', sans-serif; letter-spacing: 2px; text-transform: uppercase;">Experience the perfect pause</p>
+        
+        <input type="text" id="custName" placeholder="Your Name" style="width:100%; padding:15px; margin-bottom:15px; border:1px solid #ddd; background:#f9f9f9; color:#111; font-family:'Montserrat', sans-serif; outline: none; font-size: 0.95rem;">
+        <input type="email" id="custEmail" placeholder="Email Address" style="width:100%; padding:15px; margin-bottom:15px; border:1px solid #ddd; background:#f9f9f9; color:#111; font-family:'Montserrat', sans-serif; outline: none; font-size: 0.95rem;">
+        <input type="tel" id="custPhone" placeholder="Phone Number" style="width:100%; padding:15px; margin-bottom:15px; border:1px solid #ddd; background:#f9f9f9; color:#111; font-family:'Montserrat', sans-serif; outline: none; font-size: 0.95rem;">
+        <input type="number" id="guestCount" placeholder="Number of Guests" style="width:100%; padding:15px; margin-bottom:35px; border:1px solid #ddd; background:#f9f9f9; color:#111; font-family:'Montserrat', sans-serif; outline: none; font-size: 0.95rem;">
+        
+        <div style="display:flex; gap:15px; justify-content:center;">
+            <button onclick="sendReservation()" style="background:var(--dark); color:#fff; padding:15px 25px; border:none; cursor:pointer; font-weight:600; letter-spacing: 1px; font-family:'Montserrat', sans-serif; transition: 0.3s; width: 100%;">CONFIRM</button>
+            <button onclick="closeModal()" style="background:transparent; border: 1px solid #ddd; color:#555; padding:15px 25px; cursor:pointer; font-weight:600; letter-spacing: 1px; font-family:'Montserrat', sans-serif; transition: 0.3s; width: 100%;">CANCEL</button>
+        </div>
+    </div>
+    <!-- REVIEW MODAL (Hidden by default) -->
+    <div id="reviewModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:40px; border-radius:3px; z-index:1000; width:90%; max-width:500px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+        <div style="text-align: center;">
+            <h2 style="font-family:'Playfair Display', serif; color:var(--dark); margin-bottom:10px; font-size: 2rem;">Leave Feedback</h2>
+            <p style="font-size:0.85rem; color:#888; margin-bottom:25px; font-family:'Montserrat', sans-serif; letter-spacing: 1px; text-transform: uppercase;">We value your experience</p>
+        </div>
+        
+        <form id="reviewForm" onsubmit="submitReview(event)" style="display: flex; flex-direction: column; gap: 15px;">
+            <input type="text" id="revName" placeholder="Your Name" required style="padding: 12px; border: 1px solid #ddd; background: #f9f9f9; border-radius: 3px; font-family: 'Montserrat', sans-serif; outline: none;">
+            
+            <select id="revRating" required style="padding: 12px; border: 1px solid #ddd; background: #f9f9f9; border-radius: 3px; font-family: 'Montserrat', sans-serif; outline: none; color: #555;">
+                <option value="" disabled selected>Rate your experience...</option>
+                <option value="5">⭐⭐⭐⭐⭐ (5 Stars) - Excellent</option>
+                <option value="4">⭐⭐⭐⭐ (4 Stars) - Very Good</option>
+                <option value="3">⭐⭐⭐ (3 Stars) - Good</option>
+                <option value="2">⭐⭐ (2 Stars) - Fair</option>
+                <option value="1">⭐ (1 Star) - Poor</option>
+            </select>
+            
+            <textarea id="revComment" placeholder="Write your review here..." rows="4" required style="padding: 12px; border: 1px solid #ddd; background: #f9f9f9; border-radius: 3px; font-family: 'Montserrat', sans-serif; resize: none; outline: none;"></textarea>
+            
+            <div style="display:flex; gap:10px; justify-content:center; margin-top: 10px;">
+                <button type="submit" style="background:var(--gold); color:#fff; padding:12px 20px; border:none; cursor:pointer; font-weight:600; letter-spacing: 1px; font-family:'Montserrat', sans-serif; transition: 0.3s; width: 100%;">SUBMIT</button>
+                <button type="button" onclick="closeReviewModal()" style="background:transparent; border: 1px solid #ddd; color:#555; padding:12px 20px; cursor:pointer; font-weight:600; letter-spacing: 1px; font-family:'Montserrat', sans-serif; transition: 0.3s; width: 100%;">CANCEL</button>
+            </div>
+        </form>
+    </div>
+    <!-- Floating Cart Button -->
+    <button id="floatingCartBtn" onclick="openCartModal()" style="display:none; position:fixed; bottom:30px; right:30px; background:var(--gold); color:#fff; border:none; padding:15px 20px; border-radius:50px; font-size:1.2rem; cursor:pointer; box-shadow:0 10px 30px rgba(0,0,0,0.3); z-index:998; transition:0.3s;">
+        <i class="fa-solid fa-cart-shopping"></i> <span id="cartCount" style="font-weight:bold; margin-left:8px;">0</span>
+    </button>
+
+    <!-- Cart Modal -->
+    <!-- Cart Modal -->
+    <div id="cartModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:30px; border-radius:5px; z-index:1000; width:90%; max-width:450px; box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+        <h2 style="font-family:'Playfair Display', serif; margin-bottom:20px; text-align:center;">Your Order</h2>
+        <div id="cartItemsList" style="max-height:200px; overflow-y:auto; margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;"></div>
+        <h3 style="text-align:right; color:var(--gold); margin-bottom:20px;">Total: ₹<span id="cartTotal">0</span></h3>
+        
+        <input type="text" id="orderName" placeholder="Your Name" required style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; outline:none;">
+        <input type="email" id="orderEmail" placeholder="Your Email (to receive digital bill)" required style="width:100%; padding:12px; margin-bottom:10px; border:1px solid #ddd; outline:none;">
+        <input type="number" id="orderTable" placeholder="Table Number (e.g. 5)" required style="width:100%; padding:12px; margin-bottom:20px; border:1px solid #ddd; outline:none;">
+
+        <div style="display:flex; gap:10px;">
+            <button onclick="proceedToPayment()" style="background:var(--gold); color:#fff; padding:12px; border:none; width:100%; cursor:pointer; font-weight:bold; border-radius:3px;">PROCEED TO PAY</button>
+            <button onclick="closeCartModal()" style="background:transparent; border:1px solid #ddd; color:#555; padding:12px; width:100%; cursor:pointer; font-weight:bold; border-radius:3px;">CANCEL</button>
+        </div>
+    </div>
+
+    <!-- Demo Payment Gateway Modal -->
+    <div id="paymentModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:30px; border-radius:8px; z-index:1005; width:90%; max-width:400px; box-shadow:0 20px 50px rgba(0,0,0,0.6); text-align:center;">
+        <h3 style="margin-bottom:5px; color:#555;">Total Payable Amount</h3>
+        <h1 style="color:var(--dark); margin-bottom:25px; font-size:2.5rem;">₹<span id="payAmount">0</span></h1>
+        
+        <div style="text-align:left; margin-bottom:20px;">
+            <label style="display:block; padding:12px; border:1px solid #ccc; border-radius:5px; margin-bottom:10px; cursor:pointer;">
+                <input type="radio" name="paymentMethod" value="upi" checked> 📱 UPI (GPay / PhonePe / Paytm)
+            </label>
+            <label style="display:block; padding:12px; border:1px solid #ccc; border-radius:5px; margin-bottom:10px; cursor:pointer;">
+                <input type="radio" name="paymentMethod" value="card"> 💳 Credit / Debit Card
+            </label>
+        </div>
+
+        <button id="payBtn" onclick="processPayment()" style="background:#28a745; color:#fff; padding:15px; border:none; width:100%; font-size:1.1rem; font-weight:bold; cursor:pointer; border-radius:5px; transition:0.3s;">PAY NOW</button>
+        <button onclick="closePaymentModal()" style="background:none; color:#dc3545; padding:10px; border:none; width:100%; cursor:pointer; margin-top:10px; text-decoration:underline;">Cancel Payment</button>
+    </div>
+
+   <!-- Digital Receipt Modal -->
+    <div id="receiptModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; color:#111; padding:30px; border-radius:5px; z-index:1000; width:90%; max-width:400px; box-shadow:0 20px 50px rgba(0,0,0,0.5);">
+        
+        <div style="text-align:center; border-bottom:1px dashed #ccc; padding-bottom:15px; margin-bottom:15px;">
+            <h2 style="font-family:'Playfair Display', serif; margin:0; color:var(--dark); font-size: 2rem;">My Dream Cafe</h2>
+            <p style="margin:5px 0 0; font-size:0.9rem; color:#555;">123 Mountain View Road, Darjeeling</p>
+        </div>
+        
+        <p style="text-align:center; color:#28a745; font-weight:bold; margin-top:0; margin-bottom:15px;"><i class="fa-solid fa-circle-check"></i> Payment Successful</p>
+        
+        <div style="margin-bottom:15px; font-size:0.9rem; color:#333;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                <span><strong>Order ID:</strong> <span id="receiptId"></span></span>
+                <span><strong>Table No:</strong> <span id="receiptTable"></span></span>
+            </div>
+            <div style="margin-bottom:5px;"><strong>Date:</strong> <span id="receiptDate"></span></div>
+            <div style="margin-bottom:5px; color:#555; font-size:0.85rem; margin-top:10px;"><strong>Bill sent to:</strong> <span id="receiptEmailDisplay"></span></div>
+        </div>
+        
+        <div id="receiptItems" style="margin-bottom:15px; border-top:1px dashed #ccc; border-bottom:1px dashed #ccc; padding:15px 0; font-size:0.95rem; color:#444;"></div>
+        
+        <div style="text-align:right; margin-bottom:20px;">
+            <h3 style="margin:0; color:var(--dark);">Total Paid: ₹<span id="receiptTotal"></span></h3>
+        </div>
+        
+        <button onclick="closeReceiptModal()" style="background:var(--gold); color:#fff; padding:12px; border:none; width:100%; cursor:pointer; font-weight:bold; border-radius:3px; letter-spacing:1px;">CLOSE RECEIPT</button>
+    </div>
+
+    <div id="toast" style="visibility:hidden; min-width:250px; background-color:var(--dark); color:#fff; text-align:center; padding:16px 25px; position:fixed; z-index:1001; left:50%; bottom:30px; transform:translateX(-50%); font-weight:500; font-family:'Montserrat', sans-serif; letter-spacing: 1px; transition: 0.5s; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+        Notification Message
+    </div>
+
+    <script>
+        // Navbar Scroll Magic
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled'); 
+            } else {
+                navbar.classList.remove('scrolled'); 
+            }
+        });
+
+        // FAQ Toggle Logic
+        function toggleFaq(element) {
+            const parent = element.parentElement;
+            parent.classList.toggle('active');
+        }
+
+        // Open Modal
+        document.querySelector('.btn-hero-reserve').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('reserveModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        });
+
+        function closeModal() {
+            document.getElementById('reserveModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.style.visibility = "visible";
+            toast.style.bottom = "50px"; 
+            toast.style.opacity = "1";
+            
+            setTimeout(function(){ 
+                toast.style.bottom = "30px";
+                toast.style.opacity = "0";
+                setTimeout(() => toast.style.visibility = "hidden", 500);
+            }, 3000);
+        }
+
+        async function sendReservation() {
+            const name = document.getElementById('custName').value;
+            const email = document.getElementById('custEmail').value;
+            const phone = document.getElementById('custPhone').value;
+            const guests = document.getElementById('guestCount').value;
+
+            if(!name || !email || !phone || !guests) {
+                showToast("⚠️ Please fill all details!");
+                return;
+            }
+
+            const reservationData = { name, email, phone, guests };
+
+            try {
+                const response = await fetch('/api/reserve', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reservationData)
+                });
+
+                const result = await response.json();
+                if (!response.ok) {
+                    throw new Error(result.message || 'Could not submit the reservation.');
+                }
+                
+                closeModal();
+                showToast(result.message);
+                
+                document.getElementById('custName').value = '';
+                document.getElementById('custEmail').value = '';
+                document.getElementById('custPhone').value = '';
+                document.getElementById('guestCount').value = '';
+                
+            } catch (error) {
+                showToast(error.message || 'Server error! Is backend running?');
+            }
+        }
+
+        function formatSpecialPrice(price) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 2
+            }).format(Number(price));
+        }
+
+        function showSpecialsMessage(message) {
+            const container = document.getElementById('todaySpecials');
+            const status = document.createElement('p');
+            status.className = 'menu-status';
+            status.textContent = message;
+            container.replaceChildren(status);
+        }
+
+        // ==========================================
+        // TODAY'S SPECIAL MENU LOAD (FETCH FROM DB)
+        // ==========================================
+        async function loadTodaySpecials() {
+            const container = document.getElementById('todaySpecials'); 
+            try {
+                // আপনার আসল ডেটাবেসের API থেকে Tea, Coffee আনবে
+                const response = await fetch('/api/today-specials');
+                const specials = await response.json();
+                
+                if (!Array.isArray(specials) || specials.length === 0) {
+                    container.innerHTML = '<p class="menu-status">No specials available today.</p>';
+                    return;
+                }
+
+                let html = '';
+                specials.forEach(item => {
+                    const safeName = item.name.replace(/'/g, "\\'"); 
+                    html += `
+                        <div class="menu-item" style="margin-bottom: 15px; align-items: center;">
+                            <span class="menu-name">${item.name}</span>
+                            <div class="menu-dots"></div>
+                            <span class="menu-price" style="margin-right: 15px;">₹${item.price}</span>
+                            
+                            <button onclick="addToCart('${safeName}', ${item.price})" style="background: var(--gold); color: #fff; border: none; padding: 5px 12px; border-radius: 3px; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.3s;">
+                                + ADD
+                            </button>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error("Error loading specials:", error);
+                if (container) {
+                    container.innerHTML = '<p class="menu-status">Unable to load specials. Please check server.</p>';
+                }
+            }
+        }
+
+        loadTodaySpecials();
+        setInterval(loadTodaySpecials, 30000);
+        // Load Full Menu by Categories
+        // Load Full Menu by Categories (With Add to Cart)
+        async function loadFullMenu() {
+            const container = document.getElementById('fullMenuContainer');
+            try {
+                const response = await fetch('/api/menu');
+                const menuItems = await response.json();
+                
+                if (!response.ok) throw new Error('Could not load menu.');
+                
+                if (!Array.isArray(menuItems) || menuItems.length === 0) {
+                    container.innerHTML = '<p class="menu-status" style="text-align: center; grid-column: 1 / -1;">Our menu is updating. Please check back soon!</p>';
+                    return;
+                }
+
+                const categories = {
+                    'Hot Beverages': [],
+                    'Cold Drinks': [],
+                    'Snacks': [],
+                    'Desserts': []
+                };
+
+                menuItems.forEach(item => {
+                    if (categories[item.category]) {
+                        categories[item.category].push(item);
+                    }
+                });
+
+                container.innerHTML = ''; 
+
+                for (const [category, items] of Object.entries(categories)) {
+                    if (items.length === 0) continue; 
+
+                    let categoryHTML = `
+                        <div class="menu-category">
+                            <h3 style="font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.8rem; margin-bottom: 25px; border-bottom: 1px solid #eaeaea; padding-bottom: 10px;">${category}</h3>
+                            <div class="menu-list-container" style="gap: 15px;">
+                    `;
+
+                    items.forEach(item => {
+                        // খাবারের নামে সিঙ্গেল কোটেশন (') থাকলে যাতে এরর না আসে তার ব্যবস্থা
+                        const safeName = item.name.replace(/'/g, "\\'"); 
+                        
+                        categoryHTML += `
+                            <div class="menu-item" style="margin-bottom: 15px; align-items: center;">
+                                <span class="menu-name">${item.name}</span>
+                                <div class="menu-dots"></div>
+                                <span class="menu-price" style="margin-right: 15px;">${formatSpecialPrice(item.price)}</span>
+                                <button onclick="addToCart('${safeName}', ${item.price})" style="background: var(--gold); color: #fff; border: none; padding: 5px 12px; border-radius: 3px; cursor: pointer; font-weight: bold; font-size: 0.8rem;">+ ADD</button>
+                            </div>
+                        `;
+                    });
+
+                    categoryHTML += `</div></div>`;
+                    container.innerHTML += categoryHTML;
+                }
+                
+            } catch (error) {
+                console.error("Menu is facing an issue:", error);
+                container.innerHTML = '<p class="menu-status" style="text-align: center; grid-column: 1 / -1;">Menu is currently unavailable.</p>';
+            }
+        }
+
+        // ফাংশনটি কল করা
+        loadFullMenu();
+        // Toggle Full Menu Function
+        function toggleFullMenu() {
+            const fullMenu = document.getElementById('full-menu');
+            const btn = document.getElementById('viewMenuBtn');
+            
+            if (fullMenu.style.display === 'none') {
+                // মেনু ওপেন হবে
+                fullMenu.style.display = 'block';
+                btn.textContent = 'HIDE FULL MENU'; // বাটনের লেখা চেঞ্জ হবে
+                
+                // স্মুথভাবে নিচে স্ক্রল করবে
+                setTimeout(() => {
+                    fullMenu.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else {
+                // মেনু আবার হাইড হবে
+                fullMenu.style.display = 'none';
+                btn.textContent = 'VIEW FULL MENU';
+                document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+        // ডাইনামিক রিভিউ লোড করা
+        async function loadDynamicReviews() {
+            const grid = document.querySelector('.review-grid');
+            if(!grid) return;
+
+            try {
+                const res = await fetch('/api/reviews/approved');
+                const reviews = await res.json();
+
+                if(reviews.length > 0) {
+                    grid.innerHTML = ''; // হার্ডকোডেড রিভিউ রিমুভ করবে
+                    reviews.forEach(r => {
+                        let starsHTML = '<i class="fa-solid fa-star"></i>'.repeat(r.rating);
+                        const card = document.createElement('div');
+                        card.className = 'review-card';
+                        card.innerHTML = `
+                            <div class="stars">${starsHTML}</div>
+                            <p class="review-text">"${r.comment}"</p>
+                            <p class="reviewer-name">${r.name}</p>
+                        `;
+                        grid.appendChild(card);
+                    });
+                }
+            } catch (err) {
+                console.error('Could not load reviews');
+            }
+        }
+        
+        // রিভিউ সাবমিট করা
+        // Review Modal Open / Close Logic
+        function openReviewModal() {
+            document.getElementById('reviewModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.getElementById('reviewForm').reset();
+        }
+
+        // রিভিউ সাবমিট করা
+        async function submitReview(event) {
+            event.preventDefault();
+            const data = {
+                name: document.getElementById('revName').value,
+                rating: document.getElementById('revRating').value,
+                comment: document.getElementById('revComment').value
+            };
+
+            try {
+                const res = await fetch('/api/reviews', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                
+                showToast(result.message); // নোটিফিকেশন দেখাবে
+                
+                if(res.ok) {
+                    closeReviewModal(); // সাবমিট হলে পপ-আপ অটো বন্ধ হয়ে যাবে
+                }
+            } catch (err) {
+                showToast('Failed to submit review.');
+            }
+        }
+
+        // পেজ লোড হওয়ার সাথে সাথে রিভিউ কল করা
+        loadDynamicReviews();
+        // ==========================================
+        // DARK & LIGHT MODE LOGIC
+        // ==========================================
+        function toggleTheme() {
+            const body = document.body;
+            const themeBtn = document.getElementById('themeToggle');
+            const icon = themeBtn.querySelector('i');
+            
+            body.classList.toggle('dark-mode');
+            
+            // আইকন চেঞ্জ করা এবং লোকাল স্টোরেজে সেভ করা
+            if(body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                localStorage.setItem('cafeTheme', 'dark');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                localStorage.setItem('cafeTheme', 'light');
+            }
+        }
+
+        // পেজ লোড হওয়ার সময় আগের সেভ করা থিম চেক করা
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('cafeTheme');
+            if(savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                const icon = document.querySelector('#themeToggle i');
+                if(icon) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+        });
+        // ==========================================
+        // CART & ORDERING SYSTEM
+        // ==========================================
+        let cart = [];
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            document.getElementById('floatingCartBtn').style.display = 'block';
+            document.getElementById('cartCount').innerText = cart.length;
+            showToast(`Added ${name} to cart`);
+        }
+
+        function openCartModal() {
+            const list = document.getElementById('cartItemsList');
+            const cartTotal = document.getElementById('cartTotal');
+
+            // যদি কার্ট খালি থাকে, তাহলে কার্ট বন্ধ করে দেবে
+            if (cart.length === 0) {
+                closeCartModal();
+                return;
+            }
+
+            // আইটেমগুলো Group করা এবং unitPrice সেভ রাখা
+            const itemCounts = {};
+            cart.forEach((item) => {
+                if (itemCounts[item.name]) {
+                    itemCounts[item.name].qty += 1;
+                    itemCounts[item.name].price += item.price;
+                } else {
+                    itemCounts[item.name] = { qty: 1, price: item.price, unitPrice: item.price };
+                }
+            });
+
+            list.innerHTML = '';
+            let total = 0;
+
+            // Group করা আইটেমগুলো Cart-এ দেখানো (সাথে + , - এবং Delete বাটন)
+            for (const [name, data] of Object.entries(itemCounts)) {
+                total += data.price;
+                const safeName = name.replace(/'/g, "\\'"); 
+                
+                list.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px; align-items:center; border-bottom: 1px dashed #eee; padding-bottom: 8px;">
+                        <span style="font-weight:600; color:#333; flex:1;">${name}</span>
+                        
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <!-- Plus / Minus Quantity Controls -->
+                            <div style="display:flex; align-items:center; border:1px solid #ddd; border-radius:3px; overflow:hidden;">
+                                <button onclick="removeOneFromCart('${safeName}')" style="background:#f1f1f1; border:none; padding:4px 10px; cursor:pointer; font-weight:bold; color:#333; font-size:1.1rem; transition:0.3s;">-</button>
+                                <span style="padding:0 10px; font-weight:bold; font-size:0.95rem; min-width:30px; text-align:center;">${data.qty}</span>
+                                <button onclick="addOneToCart('${safeName}', ${data.unitPrice})" style="background:#f1f1f1; border:none; padding:4px 10px; cursor:pointer; font-weight:bold; color:#333; font-size:1.1rem; transition:0.3s;">+</button>
+                            </div>
+                            
+                            <!-- Item Total Price -->
+                            <span style="font-weight:bold; color:var(--dark); width:55px; text-align:right;">₹${data.price}</span>
+                            
+                            <!-- Full Delete Button -->
+                            <button onclick="removeAllFromCart('${safeName}')" style="background:none; border:none; color:#dc3545; cursor:pointer; font-size:1.1rem; margin-left:5px;" title="Delete All">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+            cartTotal.innerText = total;
+            
+            document.getElementById('cartModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        // Cart-এর ভেতরে '+' বাটনে ক্লিক করলে ১টি আইটেম বাড়বে
+        function addOneToCart(name, price) {
+            cart.push({ name, price });
+            document.getElementById('cartCount').innerText = cart.length;
+            openCartModal(); // কার্ট রিফ্রেশ করবে
+        }
+
+        // Cart-এর ভেতরে '-' বাটনে ক্লিক করলে ১টি আইটেম কমবে
+        function removeOneFromCart(name) {
+            const index = cart.findIndex(item => item.name === name);
+            if (index > -1) {
+                cart.splice(index, 1); 
+                document.getElementById('cartCount').innerText = cart.length;
+                
+                if (cart.length === 0) {
+                    document.getElementById('floatingCartBtn').style.display = 'none';
+                    closeCartModal();
+                } else {
+                    openCartModal(); 
+                }
+            }
+        }
+
+        // Cart-এর ভেতরে 'Trash' আইকনে ক্লিক করলে ওই আইটেমটি পুরোপুরি ডিলিট হয়ে যাবে
+        function removeAllFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            document.getElementById('cartCount').innerText = cart.length;
+            
+            if (cart.length === 0) {
+                document.getElementById('floatingCartBtn').style.display = 'none';
+                closeCartModal();
+            } else {
+                openCartModal(); 
+            }
+        }
+
+        // Cart থেকে একটি একটি করে আইটেম কমানোর ফাংশন
+        function removeOneFromCart(name) {
+            const index = cart.findIndex(item => item.name === name);
+            if (index > -1) {
+                cart.splice(index, 1); // শুধু একটা আইটেম ডিলিট করবে
+                document.getElementById('cartCount').innerText = cart.length; // কার্টের নাম্বার আপডেট করবে
+                
+                if (cart.length === 0) {
+                    closeCartModal();
+                } else {
+                    openCartModal(); // কার্ট রিলোড করবে
+                }
+            }
+        }
+        function closeCartModal() {
+            document.getElementById('cartModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
+        async function placeOrder() {
+            const name = document.getElementById('orderName').value;
+            const table = document.getElementById('orderTable').value;
+            if(!name || !table) return showToast("Enter Name and Table Number!");
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            
+            try {
+                const res = await fetch('/api/orders', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ customerName: name, tableNumber: table, items: cart, totalAmount: total })
+                });
+                const data = await res.json();
+                
+                if(res.ok) {
+                    closeCartModal();
+                    showReceipt(data.order);
+                    cart = []; // Empty cart
+                    document.getElementById('floatingCartBtn').style.display = 'none';
+                }
+            } catch(e) {
+                showToast("Failed to place order.");
+            }
+        }
+        function proceedToPayment() {
+            const name = document.getElementById('orderName').value;
+            const email = document.getElementById('orderEmail').value;
+            const table = document.getElementById('orderTable').value;
+            
+            if(!name || !email || !table) return showToast("Please enter Name, Email, and Table Number!");
+            if(!email.includes('@')) return showToast("Please enter a valid Email!");
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('payAmount').innerText = total;
+
+            document.getElementById('cartModal').style.display = 'none';
+            document.getElementById('paymentModal').style.display = 'block';
+        }
+
+        async function processPayment() {
+            const payBtn = document.getElementById('payBtn');
+            const name = document.getElementById('orderName').value;
+            const email = document.getElementById('orderEmail').value;
+            const table = document.getElementById('orderTable').value;
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+            payBtn.innerText = "Processing Payment... ⏳";
+            payBtn.style.background = "#ffc107";
+            payBtn.style.color = "#000";
+            payBtn.disabled = true;
+
+            setTimeout(async () => {
+                payBtn.innerText = "Payment Successful ✅";
+                payBtn.style.background = "#28a745";
+                payBtn.style.color = "#fff";
+
+                try {
+                    const res = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ customerName: name, email: email, tableNumber: table, items: cart, totalAmount: total })
+                    });
+                    const data = await res.json();
+                    
+                    if(res.ok) {
+                        setTimeout(() => {
+                            document.getElementById('paymentModal').style.display = 'none';
+                            data.order.email = email; // ইমেইল দেখানোর জন্য
+                            showReceipt(data.order);
+                            cart = []; 
+                            document.getElementById('floatingCartBtn').style.display = 'none';
+                            
+                            payBtn.innerText = "PAY NOW";
+                            payBtn.disabled = false;
+                            document.getElementById('orderName').value = '';
+                            document.getElementById('orderEmail').value = '';
+                            document.getElementById('orderTable').value = '';
+                        }, 1000); 
+                    }
+                } catch(e) {
+                    showToast("Failed to place order.");
+                    payBtn.innerText = "PAY NOW";
+                    payBtn.disabled = false;
+                }
+            }, 2500);
+        }
+
+        function showReceipt(order) {
+            document.getElementById('receiptId').innerText = order.orderId;
+            document.getElementById('receiptTable').innerText = order.tableNumber;
+            document.getElementById('receiptDate').innerText = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
+            document.getElementById('receiptEmailDisplay').innerText = order.email;
+            
+            // আইটেমগুলো Group করা (যেমন: Water x 2)
+            const itemCounts = {};
+            order.items.forEach(item => {
+                if(itemCounts[item.name]) {
+                    itemCounts[item.name].qty += 1;
+                    itemCounts[item.name].price += item.price;
+                } else {
+                    itemCounts[item.name] = { qty: 1, price: item.price };
+                }
+            });
+
+            let itemsHTML = '';
+            for(const [name, data] of Object.entries(itemCounts)) {
+                itemsHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="font-weight:600;">${name} <span style="color:#888; font-size:0.9em; margin-left:5px;">x ${data.qty}</span></span>
+                                <span>₹${data.price}</span>
+                              </div>`;
+            }
+            document.getElementById('receiptItems').innerHTML = itemsHTML;
+            document.getElementById('receiptTotal').innerText = order.totalAmount;
+            
+            document.getElementById('receiptModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receiptModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

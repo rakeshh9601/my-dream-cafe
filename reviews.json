@@ -1,0 +1,18 @@
+[
+  {
+    "id": "28c9765d-0d6f-4df9-a513-18b5869733d3",
+    "name": "Rakesh",
+    "comment": "good",
+    "rating": 5,
+    "status": "approved",
+    "createdAt": "2026-08-07T09:53:30.945Z"
+  },
+  {
+    "id": "97af48c3-96db-45b5-b9a6-48bee6ae3e3d",
+    "name": "asd",
+    "comment": "sda",
+    "rating": 1,
+    "status": "approved",
+    "createdAt": "2026-08-07T10:18:36.018Z"
+  }
+]
